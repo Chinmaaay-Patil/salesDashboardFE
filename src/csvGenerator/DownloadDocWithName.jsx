@@ -1,51 +1,36 @@
-import React, { Component } from "react";
-import { render } from "react-dom";
-
-
-
+import React, { useState } from "react";
 import { saveAs } from "file-saver";
 import { Packer } from "docx";
-import { experiences, education, skills, achievements } from "./cv-data";
+import { SalesData } from "./cv-data";
 import { DocumentCreator } from "./cv-generator";
 
+const DownloadDocWithName = () => {
+  const [text, setText] = useState("");
 
-
-class DownloadDocWithName extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      name: "React"
-    };
-  }
-
-  generate() {
+  const generate = () => {
     const documentCreator = new DocumentCreator();
     const doc = documentCreator.create([
-      experiences,
-      education,
-      skills,
-      achievements
+      
+      SalesData,
+      text,
     ]);
 
-    Packer.toBlob(doc).then(blob => {
+    Packer.toBlob(doc).then((blob) => {
       console.log(blob);
-      saveAs(blob, "example.docx");
+      saveAs(blob, "salesDashbord.docx");
       console.log("Document created successfully");
     });
-  }
+  };
 
-  render() {
-    return (
-      <div>
-       
-        <p>
-          Start editing to see some magic happen :
-          <button onClick={this.generate}>Generate CV with docx!</button>
-        </p>
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      <input onChange={(e) => setText(e.target.value)} />
+   
+      
+        <button onClick={generate}>Generate CV with docx!</button>
+     
+    </div>
+  );
+};
 
-
-export default DownloadDocWithName 
+export default DownloadDocWithName;
