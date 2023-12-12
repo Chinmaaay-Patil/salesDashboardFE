@@ -24,10 +24,16 @@ const DownloadDocWithName = () => {
 
   return (
     <div>
-      <input onChange={(e) => setText(e.target.value)} />
+      <div style={{margin:'10px'}}>
+
+      <label>
+        Enter Text: <input placeholder="Enter Text..." onChange={(e) => setText(e.target.value)} />
+      </label>
+      
+      </div>
    
       
-        <button onClick={generate}>Generate CV with docx!</button>
+        <button style={{ backgroundColor:'black',color:'white'}}onClick={generate}>Generate  docx!</button>
      
     </div>
   );
