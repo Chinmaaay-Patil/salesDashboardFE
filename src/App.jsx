@@ -1,17 +1,17 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import DownloadDocWithName from './csvGenerator/DownloadDocWithName'
+import "./App.css";
+import SignIn from "./Components/Auth/SignIn/SignIn";
+import { HashRouter as Router, Switch, Route } from "react-router-dom";
+import Dashboard from "./Components/Dashboard/Dashboard";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-     <DownloadDocWithName/>
-    </>
-  )
+    <Router>
+      <Switch>
+        <Route path="/" exact component={SignIn} />
+        <Route path="/dashboard" component={Dashboard} />
+      </Switch>
+    </Router>
+  );
 }
 
-export default App
+export default App;
