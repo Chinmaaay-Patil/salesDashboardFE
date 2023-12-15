@@ -1,17 +1,32 @@
-import "./App.css";
-import SignIn from "./Components/Auth/SignIn/SignIn";
-import { HashRouter as Router, Switch, Route } from "react-router-dom";
-import Dashboard from "./Components/Dashboard/Dashboard";
+import { useSelector } from "react-redux";
 
-function App() {
+import { ThemeProvider } from "@mui/material/styles";
+import { CssBaseline, StyledEngineProvider } from "@mui/material";
+
+// routing
+import Routes from "routes";
+
+// defaultTheme
+import themes from "themes";
+
+// project imports
+import NavigationScroll from "layout/NavigationScroll";
+
+// ==============================|| APP ||============================== //
+
+const App = () => {
+  const customization = useSelector((state) => state.customization);
+
   return (
-    <Router>
-      <Switch>
-        <Route path="/" exact component={SignIn} />
-        <Route path="/dashboard" component={Dashboard} />
-      </Switch>
-    </Router>
+    <StyledEngineProvider injectFirst>
+      <ThemeProvider theme={themes(customization)}>
+        <CssBaseline />
+        <NavigationScroll>
+          <Routes />
+        </NavigationScroll>
+      </ThemeProvider>
+    </StyledEngineProvider>
   );
-}
+};
 
 export default App;
