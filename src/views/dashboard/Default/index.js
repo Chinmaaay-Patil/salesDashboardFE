@@ -18,7 +18,6 @@ const Dashboard = () => {
   useEffect(() => {
     setLoading(false);
   }, []);
-
   const cardsData = [
     {
       id: 1,
@@ -26,7 +25,7 @@ const Dashboard = () => {
       icon: newLeads,
       count: 1024,
       opportunitiesCount: 0,
-      bgColor: ''
+      bgColor: 'linear-gradient(226deg, #E0D2FF 5.51%, #9678DC 96.49%)'
     },
     {
       id: 2,
@@ -34,7 +33,7 @@ const Dashboard = () => {
       icon: demo,
       count: 2024,
       opportunitiesCount: 1,
-      bgColor: ''
+      bgColor: 'linear-gradient(45deg, #3763CC 24.77%, #94C3FF 94.1%)'
     },
     {
       id: 3,
@@ -42,7 +41,7 @@ const Dashboard = () => {
       icon: quotation,
       count: 3024,
       opportunitiesCount: 2,
-      bgColor: ''
+      bgColor: 'linear-gradient(44deg, #F26462 29.52%, #F8B9BA 96.71%)'
     },
     {
       id: 4,
@@ -50,7 +49,7 @@ const Dashboard = () => {
       icon: closedLeads,
       count: 4024,
       opportunitiesCount: 3,
-      bgColor: ''
+      bgColor: 'linear-gradient(46deg, #F5915A 39.61%, #FFC693 96.01%)'
     }
   ];
   return (
