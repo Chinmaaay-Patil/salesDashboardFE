@@ -10,6 +10,8 @@ import newLeads from 'assets/images/newLeads.png';
 import closedLeads from 'assets/images/closedLeads.png';
 import demo from 'assets/images/demo.png';
 import quotation from 'assets/images/quotation.png';
+import PopularCard from './PopularCard';
+import TotalGrowthBarChart from './TotalGrowthBarChart';
 
 // ==============================|| DEFAULT DASHBOARD ||============================== //
 
@@ -77,12 +79,12 @@ const Dashboard = () => {
       </Grid>
       <Grid item xs={12}>
         <Grid container spacing={gridSpacing}>
-          {/* <Grid item xs={12} md={8}>
-            <TotalGrowthBarChart isLoading={isLoading} />
-          </Grid> */}
-          {/* <Grid item xs={12} md={4}>
+          <Grid item lg={6} xs={12} md={8}>
             <PopularCard isLoading={isLoading} />
-          </Grid> */}
+          </Grid>{' '}
+          <Grid item lg={6} xs={12} md={4}>
+            <TotalGrowthBarChart isLoading={isLoading} />
+          </Grid>
         </Grid>
       </Grid>
     </Grid>

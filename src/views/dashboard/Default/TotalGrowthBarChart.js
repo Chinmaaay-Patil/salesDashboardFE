@@ -20,12 +20,16 @@ import chartData from './chart-data/total-growth-bar-chart';
 
 const status = [
   {
-    value: 'today',
-    label: 'Today'
-  },
-  {
     value: 'month',
     label: 'This Month'
+  },
+  {
+    value: 'threeMonth',
+    label: 'Three Months'
+  },
+  {
+    value: 'sixMonth',
+    label: 'Six Months'
   },
   {
     value: 'year',
@@ -36,7 +40,7 @@ const status = [
 // ==============================|| DASHBOARD DEFAULT - TOTAL GROWTH BAR CHART ||============================== //
 
 const TotalGrowthBarChart = ({ isLoading }) => {
-  const [value, setValue] = useState('today');
+  const [value, setValue] = useState('month');
   const theme = useTheme();
   const customization = useSelector((state) => state.customization);
 
@@ -46,15 +50,16 @@ const TotalGrowthBarChart = ({ isLoading }) => {
   const grey200 = theme.palette.grey[200];
   const grey500 = theme.palette.grey[500];
 
-  const primary200 = theme.palette.primary[200];
-  const primaryDark = theme.palette.primary.dark;
-  const secondaryMain = theme.palette.secondary.main;
+  const primary200 = '#F26462';
+  const primaryDark = '#F5915A';
+  const secondaryMain = 'green';
   const secondaryLight = theme.palette.secondary.light;
 
   useEffect(() => {
     const newChartData = {
       ...chartData.options,
-      colors: [primary200, primaryDark, secondaryMain, secondaryLight],
+
+      colors: [primary200, primaryDark],
       xaxis: {
         labels: {
           style: {
@@ -65,7 +70,8 @@ const TotalGrowthBarChart = ({ isLoading }) => {
       yaxis: {
         labels: {
           style: {
-            colors: [primary]
+            colors: [primary],
+            borderRadius: 20
           }
         }
       },
@@ -100,10 +106,7 @@ const TotalGrowthBarChart = ({ isLoading }) => {
                 <Grid item>
                   <Grid container direction="column" spacing={1}>
                     <Grid item>
-                      <Typography variant="subtitle2">Total Growth</Typography>
-                    </Grid>
-                    <Grid item>
-                      <Typography variant="h3">$2,324.00</Typography>
+                      <Typography variant="h2">Sales per User</Typography>
                     </Grid>
                   </Grid>
                 </Grid>
