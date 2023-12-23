@@ -1,51 +1,26 @@
-// import React from 'react';
-// import { Box, Checkbox, FormControlLabel } from '@mui/material';
-
-// function ColumnsList({ selectedColumns, setSelectedColumns, columns }) {
-//   const handleToggleColumnVisibility = (columnId) => {
-//     const updatedColumns = selectedColumns.map((column) => {
-//       if (column.id === columnId) {
-//         return { ...column, visible: !column.visible };
-//       }
-//       return column;
-//     });
-
-//     setSelectedColumns(updatedColumns);
-//   };
-
-//   return (
-//     <Box>
-//       {columns.map((column) => (
-//         <FormControlLabel
-//           key={column.id}
-//           control={
-//             <Checkbox
-//               checked={selectedColumns.find((c) => c.id === column.id)?.visible || false}
-//               onChange={() => handleToggleColumnVisibility(column.id)}
-//             />
-//           }
-//           label={column.label}
-//         />
-//       ))}
-//     </Box>
-//   );
-// }
-
-// export default ColumnsList;
-
-import * as React from 'react';
-import { styled, alpha } from '@mui/material/styles';
-import Button from '@mui/material/Button';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import EditIcon from '@mui/icons-material/Edit';
-import Divider from '@mui/material/Divider';
-import ArchiveIcon from '@mui/icons-material/Archive';
-import FileCopyIcon from '@mui/icons-material/FileCopy';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import React, { useState } from 'react';
+import { Button, Checkbox, FormControlLabel, MenuItem } from '@mui/material';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { useEffect } from 'react';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import { CheckBox } from '@mui/icons-material';
-import { Checkbox, FormControlLabel } from '@mui/material';
+import { styled, alpha } from '@mui/material/styles';
+import Menu from '@mui/material/Menu';
+
+const grid = 8;
+
+const getItemStyle = (isDragging, draggableStyle) => ({
+  userSelect: 'none',
+  margin: `0 0 ${grid}px 0`,
+  background: isDragging ? 'lightgreen' : 'none',
+  cursor: 'move',
+
+  ...draggableStyle
+});
+
+const getListStyle = (isDraggingOver) => ({
+  background: isDraggingOver ? 'lightblue' : 'none',
+  cursor: 'move'
+});
 
 const StyledMenu = styled((props) => (
   <Menu
@@ -84,14 +59,22 @@ const StyledMenu = styled((props) => (
   }
 }));
 
-export default function CustomizedMenus({ selectedColumns, setSelectedColumns, columns }) {
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
+const CustomerList = ({ selectedColumns, setSelectedColumns }) => {
+  const [customers, setCustomers] = useState([]);
+
+  useEffect(() => {
+    setCustomers(selectedColumns);
+  }, []);
+
+  const handleOnDragEnd = (result) => {
+    if (!result.destination) {
+      return;
+    }
+    const newCustomers = [...customers];
+    const [movedCustomer] = newCustomers.splice(result.source.index, 1);
+    newCustomers.splice(result.destination.index, 0, movedCustomer);
+    setCustomers(newCustomers);
+    setSelectedColumns(newCustomers);
   };
   const handleToggleColumnVisibility = (columnId) => {
     const updatedColumns = selectedColumns.map((column) => {
@@ -104,6 +87,14 @@ export default function CustomizedMenus({ selectedColumns, setSelectedColumns, c
     setSelectedColumns(updatedColumns);
   };
 
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   return (
     <div>
       <Button
@@ -116,8 +107,9 @@ export default function CustomizedMenus({ selectedColumns, setSelectedColumns, c
         onClick={handleClick}
         endIcon={<KeyboardArrowDownIcon />}
       >
-        Show/hide columns
+        Configure columns
       </Button>
+
       <StyledMenu
         id="demo-customized-menu"
         MenuListProps={{
@@ -133,21 +125,43 @@ export default function CustomizedMenus({ selectedColumns, setSelectedColumns, c
         open={open}
         onClose={handleClose}
       >
-        {columns.map((column) => (
-          <MenuItem disableRipple>
-            <FormControlLabel
-              key={column.id}
-              control={
-                <Checkbox
-                  checked={selectedColumns.find((c) => c.id === column.id)?.visible || false}
-                  onChange={() => handleToggleColumnVisibility(column.id)}
-                />
-              }
-              label={column.label}
-            />
-          </MenuItem>
-        ))}
+        <DragDropContext onDragEnd={handleOnDragEnd}>
+          <Droppable droppableId="droppable">
+            {(provided, snapshot) => (
+              <div ref={provided.innerRef} style={getListStyle(snapshot.isDraggingOver)}>
+                {customers.map((customer, index) => (
+                  <Draggable key={customer.id} draggableId={customer.id.toString()} index={index}>
+                    {(provided, snapshot) => (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}
+                      >
+                        <MenuItem disableRipple sx={{ cursor: 'move' }}>
+                          <FormControlLabel
+                            key={customer.id}
+                            control={
+                              <Checkbox
+                                checked={selectedColumns.find((c) => c.id === customer.id)?.visible || false}
+                                onChange={() => handleToggleColumnVisibility(customer.id)}
+                              />
+                            }
+                            label={customer.label}
+                          />
+                        </MenuItem>
+                      </div>
+                    )}
+                  </Draggable>
+                ))}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>{' '}
       </StyledMenu>
     </div>
   );
-}
+};
+
+export default CustomerList;
