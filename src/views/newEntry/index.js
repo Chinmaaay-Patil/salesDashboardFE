@@ -45,26 +45,26 @@ const MyForm = () => {
     // Handle the uploaded files here
     console.log('Uploaded files:', files);
   };
+  function generateUniqueId() {
+    const timestamp = Date.now().toString(36); // Convert current timestamp to base36 string
+    const randomNum = Math.random().toString(36).substr(2, 5); // Generate a random number
+
+    return timestamp + randomNum;
+  }
 
   return (
     <form onSubmit={formik.handleSubmit}>
-      <Grid container spacing={3}>
-        <Grid item xs={12} md={6} lg={4}>
+      <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between' }}>
+        <Button variant="contained">New DB ID - {generateUniqueId()} </Button>
+        <Button component="label" variant="contained" startIcon={<CloudDownloadIcon />}>
+          Download file
+        </Button>
+      </Box>
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
           <TextField fullWidth label="Lab Name" name="labName" value={formik.values.labName} onChange={formik.handleChange} />
-        </Grid>
-        <Grid item xs={12} md={6} lg={4}>
           <TextField fullWidth label="Owner Name" name="ownerName" value={formik.values.ownerName} onChange={formik.handleChange} />
-        </Grid>
-        <Grid item xs={12} md={6} lg={4}>
           <TextField fullWidth label="Mobile" name="mobile" value={formik.values.mobile} onChange={formik.handleChange} />
-        </Grid>
-        <Grid item xs={12} md={6} lg={4}>
-          <TextField fullWidth label="Email" name="email" value={formik.values.email} onChange={formik.handleChange} />
-        </Grid>
-        <Grid item xs={12} md={6} lg={4}>
-          <TextField fullWidth label="Address" name="address" value={formik.values.address} onChange={formik.handleChange} />
-        </Grid>
-        <Grid item xs={12} md={6} lg={4}>
           <TextField
             InputLabelProps={{
               shrink: true
@@ -76,17 +76,13 @@ const MyForm = () => {
             type="date"
             value={formik.values.date}
             onChange={(value) => formik.setFieldValue('date', value.target.value)}
-          />
-          {/* <DatePicker
-            fullWidth
-            label="Date"
-            name="date"
-            value={formik.values.date}
-            onChange={(value) => formik.setFieldValue('date', value)}
-            renderInput={(params) => <TextField {...params} />}
-          /> */}
-        </Grid>
-        <Grid item xs={12} md={6} lg={4}>
+          />{' '}
+        </Box>
+        <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
+          <TextField fullWidth label="Email" name="email" value={formik.values.email} onChange={formik.handleChange} />
+          <TextField fullWidth label="Address" name="address" value={formik.values.address} onChange={formik.handleChange} />
+        </Box>
+        <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
           <FormControl fullWidth>
             <InputLabel>Source of Lead</InputLabel>
             <Select label="Source of Lead" name="sourceOfLead" value={formik.values.sourceOfLead} onChange={formik.handleChange}>
@@ -97,8 +93,6 @@ const MyForm = () => {
               ))}
             </Select>
           </FormControl>
-        </Grid>
-        <Grid item xs={12} md={6} lg={4}>
           <FormControl fullWidth>
             <InputLabel>Source Person Name</InputLabel>
             <Select
@@ -114,8 +108,6 @@ const MyForm = () => {
               ))}
             </Select>
           </FormControl>
-        </Grid>
-        <Grid item xs={12} md={6} lg={4}>
           <FormControl fullWidth>
             <InputLabel>Version</InputLabel>
             <Select
@@ -135,11 +127,9 @@ const MyForm = () => {
               ))}
             </Select>
           </FormControl>
-        </Grid>
-        <Grid item xs={12} md={6} lg={4}>
           <TextField fullWidth label="Amount" name="amount" value={formik.values.amount} onChange={formik.handleChange} />
-        </Grid>
-        <Grid item xs={12} md={6} lg={4}>
+        </Box>
+        <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
           <FormControl fullWidth>
             <InputLabel>Sales Person</InputLabel>
             <Select label="Sales Person" name="salesPerson" value={formik.values.salesPerson} onChange={formik.handleChange}>
@@ -150,8 +140,6 @@ const MyForm = () => {
               ))}
             </Select>
           </FormControl>
-        </Grid>
-        <Grid item xs={12} md={6} lg={4}>
           <FormControl fullWidth>
             <InputLabel>State</InputLabel>
             <Select label="State" name="state" value={formik.values.state} onChange={formik.handleChange}>
@@ -162,69 +150,48 @@ const MyForm = () => {
               ))}
             </Select>
           </FormControl>
-        </Grid>
-        <Grid item xs={12} md={6} lg={4}>
           <TextField
             fullWidth
             label="Detail Requirement"
             name="detailRequirement"
             value={formik.values.detailRequirement}
             onChange={formik.handleChange}
-            multiline
             rows={4}
           />
-        </Grid>
-        <Grid item xs={12} md={6} lg={4}>
-          <TextField
-            fullWidth
-            label="Comment"
-            name="comment"
-            value={formik.values.comment}
-            onChange={formik.handleChange}
-            multiline
-            rows={4}
-          />
-        </Grid>
-        <Grid item xs={12} md={6} lg={4}>
-          {' '}
-          <TextField
-            InputLabelProps={{
-              shrink: true
-            }}
-            defaultValue={new Date().toISOString().split('T')[0]}
-            label="Followup Date"
-            name="followupDate"
-            value={formik.values.followupDate}
-            onChange={(value) => formik.setFieldValue('followupDate', value.target.value)}
-            sx={{ width: '100%' }}
-            type="date"
-          />
-          {/* <DatePicker
-            fullWidth
-            label="Followup Date"
-            name="followupDate"
-            value={formik.values.followupDate}
-            onChange={(value) => formik.setFieldValue('followupDate', value)}
-            renderInput={(params) => <TextField {...params} />}
-          /> */}
-        </Grid>
-        <Grid item xs={12} md={6} lg={4}>
-          <Button component="label" variant="contained" startIcon={<CloudDownloadIcon />}>
-            Download file
-          </Button>
-        </Grid>
-        <Grid item xs={12} md={6} lg={4}>
-          {/* <input
-            type="file"
-            accept=".doc, .docx"
-            onChange={(event) => {
-              formik.setFieldValue('attachment', event.currentTarget.files[0]);
-            }}
-          /> */}
-          <FileUpload onFileUpload={handleFileUpload} />
-        </Grid>
-      </Grid>
-      <Box sx={{ border: '1px solid red', mt: 15 }}>
+        </Box>
+        <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
+          <Box sx={{ width: '60%' }}>
+            <TextField
+              fullWidth
+              label="Comment"
+              name="comment"
+              value={formik.values.comment}
+              onChange={formik.handleChange}
+              multiline
+              rows={7}
+            />{' '}
+          </Box>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '40%' }}>
+            <TextField
+              InputLabelProps={{
+                shrink: true
+              }}
+              size="small"
+              defaultValue={new Date().toISOString().split('T')[0]}
+              label="Followup Date"
+              name="followupDate"
+              value={formik.values.followupDate}
+              onChange={(value) => formik.setFieldValue('followupDate', value.target.value)}
+              sx={{ width: '100%' }}
+              type="date"
+            />{' '}
+            <FileUpload onFileUpload={handleFileUpload} />{' '}
+          </Box>
+        </Box>
+      </Box>
+
+      <Box sx={{ mt: 10, display: 'flex', gap: 2, justifyContent: 'center' }}>
+        {' '}
         <Button type="submit" variant="contained" color="primary">
           Save
         </Button>{' '}

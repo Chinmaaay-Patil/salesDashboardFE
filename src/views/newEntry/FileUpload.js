@@ -33,10 +33,30 @@ const FileUpload = ({ onFileUpload }) => {
   };
 
   return (
-    <Box sx={{ padding: '20px', textAlign: 'center', border: '1px solid red' }}>
-      <div {...getRootProps()}>
+    <Box
+      sx={{
+        padding: '20px',
+        textAlign: 'center',
+        border: '1px dotted gray',
+        borderRadius: 5,
+        height: '100%'
+      }}
+    >
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 15,
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}
+        {...getRootProps()}
+      >
         <input {...getInputProps()} />
         <Typography variant="h6">Drag and drop a file here, or click to select a file</Typography>
+        <Button variant="outlined" color="primary" sx={{ borderRadius: 5 }}>
+          Upload File
+        </Button>
       </div>
       {filePreviews.map((preview, index) => (
         <div key={index} style={{ marginTop: '10px' }}>
@@ -47,9 +67,6 @@ const FileUpload = ({ onFileUpload }) => {
           </Button>
         </div>
       ))}
-      <Button variant="contained" color="primary" onClick={() => {}}>
-        Upload File
-      </Button>
     </Box>
   );
 };
