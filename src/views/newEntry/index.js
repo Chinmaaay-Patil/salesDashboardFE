@@ -3,6 +3,7 @@ import { useFormik } from 'formik';
 import { TextField, Button, MenuItem, FormControl, InputLabel, Select, Grid, Box } from '@mui/material';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import DatePicker from '@mui/lab/DatePicker';
+import FileUpload from './FileUpload';
 const MyForm = () => {
   const formik = useFormik({
     initialValues: {
@@ -39,6 +40,10 @@ const MyForm = () => {
   const handleReset = () => {
     formik.resetForm();
     formik.setFieldValue('date', new Date().toISOString().split('T')[0]);
+  };
+  const handleFileUpload = (files) => {
+    // Handle the uploaded files here
+    console.log('Uploaded files:', files);
   };
 
   return (
@@ -209,13 +214,14 @@ const MyForm = () => {
           </Button>
         </Grid>
         <Grid item xs={12} md={6} lg={4}>
-          <input
+          {/* <input
             type="file"
             accept=".doc, .docx"
             onChange={(event) => {
               formik.setFieldValue('attachment', event.currentTarget.files[0]);
             }}
-          />
+          /> */}
+          <FileUpload onFileUpload={handleFileUpload} />
         </Grid>
       </Grid>
       <Box sx={{ border: '1px solid red', mt: 15 }}>
