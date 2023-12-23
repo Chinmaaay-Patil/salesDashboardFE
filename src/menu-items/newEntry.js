@@ -8,7 +8,7 @@ const newEntry = {
   type: 'group',
   children: [
     {
-      id: '',
+      id: 'newEntry',
       title: 'New Entry',
       type: 'item',
       url: '/newEntry',

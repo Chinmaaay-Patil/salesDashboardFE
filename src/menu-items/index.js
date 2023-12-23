@@ -1,3 +1,4 @@
+import customerList from './customerList';
 import dashboard from './dashboard';
 import newEntry from './newEntry';
 // import pages from './pages';
@@ -7,7 +8,7 @@ import newEntry from './newEntry';
 // ==============================|| MENU ITEMS ||============================== //
 
 const menuItems = {
-  items: [dashboard, newEntry]
+  items: [dashboard, newEntry, customerList]
 };
 
 export default menuItems;
