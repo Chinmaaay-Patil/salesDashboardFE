@@ -6,6 +6,7 @@ import Loadable from 'ui-component/Loadable';
 
 // dashboard routing
 const DashboardDefault = Loadable(lazy(() => import('views/dashboard/Default')));
+const NewEntry = Loadable(lazy(() => import('views/newEntry')));
 
 // utilities routing
 const UtilsTypography = Loadable(lazy(() => import('views/utilities/Typography')));
@@ -26,6 +27,10 @@ const MainRoutes = {
     {
       path: '/',
       element: <DashboardDefault />
+    },
+    {
+      path: '/newEntry',
+      element: <NewEntry />
     },
     {
       path: 'dashboard',
