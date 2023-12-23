@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-
+import React from 'react';
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import {
@@ -34,16 +34,19 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 import Google from 'assets/images/icons/social-google.svg';
+import CustomizedSnackbars from './Snackbar';
+import { useNavigate } from 'react-router';
 
 // ============================|| FIREBASE - LOGIN ||============================ //
 
 const FirebaseLogin = ({ ...others }) => {
   const theme = useTheme();
+  const navigate = useNavigate();
   const scriptedRef = useScriptRef();
   const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
   const customization = useSelector((state) => state.customization);
   const [checked, setChecked] = useState(true);
-
+  const [open, setOpen] = React.useState(false);
   const googleHandler = async () => {
     console.error('Login');
   };
@@ -117,18 +120,23 @@ const FirebaseLogin = ({ ...others }) => {
           </Box>
         </Grid>
       </Grid>
-
       <Formik
         initialValues={{
-          email: 'info@codedthemes.com',
-          password: '123456',
-          submit: null
+          email: '',
+          password: ''
         }}
         validationSchema={Yup.object().shape({
           email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
           password: Yup.string().max(255).required('Password is required')
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
+          console.log('values', values);
+          if (values.email === 'test@test.com' && values.password === '123') {
+            sessionStorage.setItem('apikey', 'test@salesdashboard.com');
+            navigate('/');
+          } else {
+            setOpen(true);
+          }
           try {
             if (scriptedRef.current) {
               setStatus({ success: true });
@@ -222,7 +230,8 @@ const FirebaseLogin = ({ ...others }) => {
             </Box>
           </form>
         )}
-      </Formik>
+      </Formik>{' '}
+      <CustomizedSnackbars open={open} setOpen={setOpen} />
     </>
   );
 };

@@ -1,227 +1,139 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Avatar, Button, CardActions, CardContent, Divider, Grid, Menu, MenuItem, Typography } from '@mui/material';
+import { Grid, MenuItem, TextField, Typography } from '@mui/material';
+
+// third-party
+import ApexCharts from 'apexcharts';
+import Chart from 'react-apexcharts';
 
 // project imports
-import BajajAreaChartCard from './BajajAreaChartCard';
+import SkeletonTotalGrowthBarChart from 'ui-component/cards/Skeleton/TotalGrowthBarChart';
 import MainCard from 'ui-component/cards/MainCard';
-import SkeletonPopularCard from 'ui-component/cards/Skeleton/PopularCard';
 import { gridSpacing } from 'store/constant';
 
-// assets
-import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined';
-import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined';
-import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutlined';
-import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
+// chart data
+import chartData from './chart-data/total-growth-bar-chart';
+import DonutChartsCustom from '../Donout';
 
-// ==============================|| DASHBOARD DEFAULT - POPULAR CARD ||============================== //
+const status = [
+  {
+    value: 'month',
+    label: 'This Month'
+  },
+  {
+    value: 'threeMonth',
+    label: 'Three Months'
+  },
+  {
+    value: 'sixMonth',
+    label: 'Six Months'
+  },
+  {
+    value: 'year',
+    label: 'This Year'
+  }
+];
 
-const PopularCard = ({ isLoading }) => {
+// ==============================|| DASHBOARD DEFAULT - TOTAL GROWTH BAR CHART ||============================== //
+
+const TotalGrowthBarChart = ({ isLoading }) => {
+  const [value, setValue] = useState('month');
   const theme = useTheme();
+  const customization = useSelector((state) => state.customization);
 
-  const [anchorEl, setAnchorEl] = useState(null);
+  const { navType } = customization;
+  const { primary } = theme.palette.text;
+  const darkLight = theme.palette.dark.light;
+  const grey200 = theme.palette.grey[200];
+  const grey500 = theme.palette.grey[500];
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
+  const primary200 = '#F26462';
+  const primaryDark = '#F5915A';
+  const secondaryMain = 'green';
+  const secondaryLight = theme.palette.secondary.light;
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  useEffect(() => {
+    const newChartData = {
+      ...chartData.options,
+
+      colors: [primary200, primaryDark],
+      xaxis: {
+        labels: {
+          style: {
+            colors: [primary, primary, primary, primary, primary, primary, primary, primary, primary, primary, primary, primary]
+          }
+        }
+      },
+      yaxis: {
+        labels: {
+          style: {
+            colors: [primary],
+            borderRadius: 20
+          }
+        }
+      },
+      grid: {
+        borderColor: grey200
+      },
+      tooltip: {
+        theme: 'light'
+      },
+      legend: {
+        labels: {
+          colors: grey500
+        }
+      }
+    };
+
+    // do not load chart when loading
+    if (!isLoading) {
+      ApexCharts.exec(`bar-chart`, 'updateOptions', newChartData);
+    }
+  }, [navType, primary200, primaryDark, secondaryMain, secondaryLight, primary, darkLight, grey200, isLoading, grey500]);
 
   return (
     <>
       {isLoading ? (
-        <SkeletonPopularCard />
+        <SkeletonTotalGrowthBarChart />
       ) : (
-        <MainCard content={false}>
-          <CardContent>
-            <Grid container spacing={gridSpacing}>
-              <Grid item xs={12}>
-                <Grid container alignContent="center" justifyContent="space-between">
-                  <Grid item>
-                    <Typography variant="h4">Popular Stocks</Typography>
-                  </Grid>
-                  <Grid item>
-                    <MoreHorizOutlinedIcon
-                      fontSize="small"
-                      sx={{
-                        color: theme.palette.primary[200],
-                        cursor: 'pointer'
-                      }}
-                      aria-controls="menu-popular-card"
-                      aria-haspopup="true"
-                      onClick={handleClick}
-                    />
-                    <Menu
-                      id="menu-popular-card"
-                      anchorEl={anchorEl}
-                      keepMounted
-                      open={Boolean(anchorEl)}
-                      onClose={handleClose}
-                      variant="selectedMenu"
-                      anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'right'
-                      }}
-                      transformOrigin={{
-                        vertical: 'top',
-                        horizontal: 'right'
-                      }}
-                    >
-                      <MenuItem onClick={handleClose}> Today</MenuItem>
-                      <MenuItem onClick={handleClose}> This Month</MenuItem>
-                      <MenuItem onClick={handleClose}> This Year </MenuItem>
-                    </Menu>
-                  </Grid>
-                </Grid>
-              </Grid>
-              <Grid item xs={12} sx={{ pt: '16px !important' }}>
-                <BajajAreaChartCard />
-              </Grid>
-              <Grid item xs={12}>
-                <Grid container direction="column">
-                  <Grid item>
-                    <Grid container alignItems="center" justifyContent="space-between">
-                      <Grid item>
-                        <Typography variant="subtitle1" color="inherit">
-                          Bajaj Finery
-                        </Typography>
-                      </Grid>
-                      <Grid item>
-                        <Grid container alignItems="center" justifyContent="space-between">
-                          <Grid item>
-                            <Typography variant="subtitle1" color="inherit">
-                              $1839.00
-                            </Typography>
-                          </Grid>
-                          <Grid item>
-                            <Avatar
-                              variant="rounded"
-                              sx={{
-                                width: 16,
-                                height: 16,
-                                borderRadius: '5px',
-                                backgroundColor: theme.palette.success.light,
-                                color: theme.palette.success.dark,
-                                ml: 2
-                              }}
-                            >
-                              <KeyboardArrowUpOutlinedIcon fontSize="small" color="inherit" />
-                            </Avatar>
-                          </Grid>
-                        </Grid>
-                      </Grid>
+        <MainCard>
+          <Grid container spacing={gridSpacing} sx={{ minHeight: '56vh' }}>
+            <Grid item xs={12}>
+              <Grid container alignItems="center" justifyContent="space-between">
+                <Grid item>
+                  <Grid container direction="column" spacing={1}>
+                    <Grid item>
+                      <Typography variant="h2">Sales growth by Market Segment</Typography>
                     </Grid>
                   </Grid>
-                  <Grid item>
-                    <Typography variant="subtitle2" sx={{ color: 'success.dark' }}>
-                      10% Profit
-                    </Typography>
-                  </Grid>
                 </Grid>
-                <Divider sx={{ my: 1.5 }} />
-                <Grid container direction="column">
-                  <Grid item>
-                    <Grid container alignItems="center" justifyContent="space-between">
-                      <Grid item>
-                        <Typography variant="subtitle1" color="inherit">
-                          TTML
-                        </Typography>
-                      </Grid>
-                      <Grid item>
-                        <Grid container alignItems="center" justifyContent="space-between">
-                          <Grid item>
-                            <Typography variant="subtitle1" color="inherit">
-                              $100.00
-                            </Typography>
-                          </Grid>
-                          <Grid item>
-                            <Avatar
-                              variant="rounded"
-                              sx={{
-                                width: 16,
-                                height: 16,
-                                borderRadius: '5px',
-                                backgroundColor: theme.palette.orange.light,
-                                color: theme.palette.orange.dark,
-                                marginLeft: 1.875
-                              }}
-                            >
-                              <KeyboardArrowDownOutlinedIcon fontSize="small" color="inherit" />
-                            </Avatar>
-                          </Grid>
-                        </Grid>
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                  <Grid item>
-                    <Typography variant="subtitle2" sx={{ color: theme.palette.orange.dark }}>
-                      10% loss
-                    </Typography>
-                  </Grid>
-                </Grid>
-                <Divider sx={{ my: 1.5 }} />
-                <Grid container direction="column">
-                  <Grid item>
-                    <Grid container alignItems="center" justifyContent="space-between">
-                      <Grid item>
-                        <Typography variant="subtitle1" color="inherit">
-                          Reliance
-                        </Typography>
-                      </Grid>
-                      <Grid item>
-                        <Grid container alignItems="center" justifyContent="space-between">
-                          <Grid item>
-                            <Typography variant="subtitle1" color="inherit">
-                              $200.00
-                            </Typography>
-                          </Grid>
-                          <Grid item>
-                            <Avatar
-                              variant="rounded"
-                              sx={{
-                                width: 16,
-                                height: 16,
-                                borderRadius: '5px',
-                                backgroundColor: theme.palette.success.light,
-                                color: theme.palette.success.dark,
-                                ml: 2
-                              }}
-                            >
-                              <KeyboardArrowUpOutlinedIcon fontSize="small" color="inherit" />
-                            </Avatar>
-                          </Grid>
-                        </Grid>
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                  <Grid item>
-                    <Typography variant="subtitle2" sx={{ color: theme.palette.success.dark }}>
-                      10% Profit
-                    </Typography>
-                  </Grid>
+                <Grid item>
+                  <TextField id="standard-select-currency" select value={value} onChange={(e) => setValue(e.target.value)}>
+                    {status.map((option) => (
+                      <MenuItem key={option.value} value={option.value}>
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </TextField>
                 </Grid>
               </Grid>
             </Grid>
-          </CardContent>
-          <CardActions sx={{ p: 1.25, pt: 0, justifyContent: 'center' }}>
-            <Button size="small" disableElevation>
-              View All
-              <ChevronRightOutlinedIcon />
-            </Button>
-          </CardActions>
+            <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center', pointerEvents: 'none' }}>
+              <DonutChartsCustom />
+            </Grid>
+          </Grid>
         </MainCard>
       )}
     </>
   );
 };
 
-PopularCard.propTypes = {
+TotalGrowthBarChart.propTypes = {
   isLoading: PropTypes.bool
 };
 
-export default PopularCard;
+export default TotalGrowthBarChart;

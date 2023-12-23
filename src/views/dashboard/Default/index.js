@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 // material-ui
-import { Grid } from '@mui/material';
+import { Autocomplete, Box, Button, Grid, TextField, Typography } from '@mui/material';
 
 // project imports
 import EarningCard from './EarningCard';
@@ -12,13 +12,19 @@ import demo from 'assets/images/demo.png';
 import quotation from 'assets/images/quotation.png';
 import PopularCard from './PopularCard';
 import TotalGrowthBarChart from './TotalGrowthBarChart';
+import { useNavigate } from 'react-router';
+import DateComponent from 'ui-component/DatePicker';
 
 // ==============================|| DEFAULT DASHBOARD ||============================== //
 
 const Dashboard = () => {
+  const navigate = useNavigate();
   const [isLoading, setLoading] = useState(true);
   useEffect(() => {
     setLoading(false);
+    if (!sessionStorage.getItem('apikey')) {
+      navigate('/signin');
+    }
   }, []);
   const cardsData = [
     {
@@ -54,9 +60,72 @@ const Dashboard = () => {
       bgColor: 'linear-gradient(46deg, #F5915A 39.61%, #FFC693 96.01%)'
     }
   ];
+  const top100Films = [
+    { label: 'The Shawshank Redemption', year: 1994 },
+    { label: 'The Godfather', year: 1972 },
+    { label: 'The Godfather: Part II', year: 1974 },
+    { label: 'The Dark Knight', year: 2008 },
+    { label: '12 Angry Men', year: 1957 },
+    { label: "Schindler's List", year: 1993 },
+    { label: 'Pulp Fiction', year: 1994 },
+    {
+      label: 'The Lord of the Rings: The Return of the King',
+      year: 2003
+    },
+    { label: 'The Good, the Bad and the Ugly', year: 1966 },
+    { label: 'Fight Club', year: 1999 }
+  ];
   return (
     <Grid container spacing={gridSpacing}>
       <Grid item xs={12}>
+        {/* <Box sx={{ display: 'flex', gap: 3, pb: 2, border: '1px solid red' }}>
+          <Autocomplete
+            disablePortal
+            id="combo-box-demo"
+            options={top100Films}
+            size="small"
+            sx={{ width: '20%' }}
+            renderInput={(params) => <TextField {...params} label="Movie" />}
+          />{' '}
+          <Autocomplete
+            disablePortal
+            id="combo-box-demo"
+            size="small"
+            sx={{ width: '20%' }}
+            options={top100Films}
+            renderInput={(params) => <TextField {...params} label="Movie" />}
+          />{' '}
+        </Box> */}{' '}
+        <Typography sx={{ mb: 2 }}>Filters :</Typography>
+        <Grid container spacing={gridSpacing} sx={{ pb: 2 }}>
+          <Grid item lg={3} md={6} sm={6} xs={12}>
+            <DateComponent label="From Date" />
+          </Grid>{' '}
+          <Grid item lg={3} md={6} sm={6} xs={12}>
+            <DateComponent label="To Date" />
+          </Grid>{' '}
+          <Grid item lg={3} md={6} sm={6} xs={12}>
+            <Autocomplete
+              disablePortal
+              id="combo-box-demo"
+              size="small"
+              sx={{ width: '100%' }}
+              options={top100Films}
+              renderInput={(params) => <TextField {...params} label="Sales Person" />}
+            />{' '}
+          </Grid>
+          <Grid item lg={3} md={6} sm={6} xs={12}>
+            <Button
+              variant="outlined"
+              sx={{
+                width: '100%',
+                borderRadius: 3
+              }}
+            >
+              Filter
+            </Button>
+          </Grid>
+        </Grid>
         <Grid container spacing={gridSpacing}>
           {cardsData.map((cardData, index) => {
             return (

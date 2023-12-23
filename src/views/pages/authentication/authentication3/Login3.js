@@ -54,8 +54,18 @@ const Login = () => {
                   </Grid>
                   <Grid item xs={12}>
                     <Grid item container direction="column" alignItems="center" xs={12}>
-                      <Typography component={Link} to="/register" variant="subtitle1" sx={{ textDecoration: 'none' }}>
+                      <Typography variant="subtitle1" sx={{ textDecoration: 'none' }}>
                         Don&apos;t have an account?
+                      </Typography>
+                      <Typography
+                        color={theme.palette.secondary.main}
+                        gutterBottom
+                        variant={matchDownSM ? 'h5' : 'h4'}
+                        component={Link}
+                        to="/register"
+                        sx={{ textDecoration: 'none', color: '#673AB6' }}
+                      >
+                        Sign Up
                       </Typography>
                     </Grid>
                   </Grid>

@@ -1,4 +1,5 @@
 import dashboard from './dashboard';
+import newEntry from './newEntry';
 // import pages from './pages';
 // import utilities from './utilities';
 // import other from './other';
@@ -6,7 +7,7 @@ import dashboard from './dashboard';
 // ==============================|| MENU ITEMS ||============================== //
 
 const menuItems = {
-  items: [dashboard]
+  items: [dashboard, newEntry]
 };
 
 export default menuItems;
