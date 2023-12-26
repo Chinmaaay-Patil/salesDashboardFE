@@ -212,7 +212,7 @@ export default function EnhancedTable({ selectedColumns }) {
   return (
     <Box sx={{ width: '100%', minHeight: minHeightTable }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
-        <TableContainer>
+        <TableContainer sx={{ height: minHeightTable }}>
           <Table sx={{ minWidth: 750, minHeight: minHeightTable }} aria-labelledby="tableTitle">
             <EnhancedTableHead
               numSelected={selected.length}

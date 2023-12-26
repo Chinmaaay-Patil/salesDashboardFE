@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-
+import axios from 'axios';
 // material-ui
 import { Autocomplete, Box, Button, Grid, TextField, Typography } from '@mui/material';
 
@@ -14,6 +14,8 @@ import PopularCard from './PopularCard';
 import TotalGrowthBarChart from './TotalGrowthBarChart';
 import { useNavigate } from 'react-router';
 import DateComponent from 'ui-component/DatePicker';
+import { getTodayDate } from 'utils/getTodaysDate';
+import commonAPI from 'utils/axiosConfig';
 
 // ==============================|| DEFAULT DASHBOARD ||============================== //
 
@@ -75,34 +77,57 @@ const Dashboard = () => {
     { label: 'The Good, the Bad and the Ugly', year: 1966 },
     { label: 'Fight Club', year: 1999 }
   ];
+
+  const [dashboardDates, setDashboardDates] = useState({ fromDate: getTodayDate(), toDate: getTodayDate() });
+  console.log('DateDateDate', process.env.REACT_APP_BASE_URL, process.env.REACT_APP_VERSION);
+
+  const [salesData, setSalesData] = useState([]);
+
+  // Function to make API call
+  const fetchSalesData = async (fromDate, toDate, salesPersonID, versionID, stateID) => {
+    const encodedFromDate = encodeURIComponent(fromDate);
+    const encodedToDate = encodeURIComponent(toDate);
+
+    try {
+      const response = await commonAPI.get(
+        `/SalesList?FromDate=${encodedFromDate}&ToDate=${encodedToDate}&SalesPersonID=0&VersionID=0&StateID=0`
+      );
+      console.log('response', response);
+      setSalesData(response.data);
+    } catch (error) {
+      console.error('Error fetching sales data:', error);
+    }
+  };
+
+  // Example: Call the API on component mount
+  useEffect(() => {
+    const fromDate = '2023-12-23';
+    const toDate = '2023-12-27';
+    const salesPersonID = 0;
+    const versionID = 0;
+    const stateID = 0;
+
+    fetchSalesData(fromDate, toDate, salesPersonID, versionID, stateID);
+  }, []); // Empty dependency
+
   return (
     <Grid container spacing={gridSpacing}>
       <Grid item xs={12}>
-        {/* <Box sx={{ display: 'flex', gap: 3, pb: 2, border: '1px solid red' }}>
-          <Autocomplete
-            disablePortal
-            id="combo-box-demo"
-            options={top100Films}
-            size="small"
-            sx={{ width: '20%' }}
-            renderInput={(params) => <TextField {...params} label="Movie" />}
-          />{' '}
-          <Autocomplete
-            disablePortal
-            id="combo-box-demo"
-            size="small"
-            sx={{ width: '20%' }}
-            options={top100Films}
-            renderInput={(params) => <TextField {...params} label="Movie" />}
-          />{' '}
-        </Box> */}{' '}
         <Typography sx={{ mb: 2 }}>Filters :</Typography>
         <Grid container spacing={gridSpacing} sx={{ pb: 2 }}>
           <Grid item lg={3} md={6} sm={6} xs={12}>
-            <DateComponent label="From Date" />
+            <DateComponent
+              label="From Date"
+              value={dashboardDates.fromDate}
+              onChange={(e) => setDashboardDates({ ...dashboardDates, fromDate: e.target.value })}
+            />
           </Grid>{' '}
           <Grid item lg={3} md={6} sm={6} xs={12}>
-            <DateComponent label="To Date" />
+            <DateComponent
+              label="To Date"
+              value={dashboardDates.toDate}
+              onChange={(e) => setDashboardDates({ ...dashboardDates, toDate: e.target.value })}
+            />
           </Grid>{' '}
           <Grid item lg={3} md={6} sm={6} xs={12}>
             <Autocomplete
@@ -112,7 +137,7 @@ const Dashboard = () => {
               sx={{ width: '100%' }}
               options={top100Films}
               renderInput={(params) => <TextField {...params} label="Sales Person" />}
-            />{' '}
+            />
           </Grid>
           <Grid item lg={3} md={6} sm={6} xs={12}>
             <Button
