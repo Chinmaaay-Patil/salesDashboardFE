@@ -17,6 +17,8 @@ import { gridSpacing } from 'store/constant';
 
 // chart data
 import chartData from './chart-data/total-growth-bar-chart';
+import { calculateDateRange } from 'utils/calculateDateRangeFilterDates';
+import { fetchSalesDashboardData } from 'utils/fetchSalesDashboardData';
 
 const status = [
   {
@@ -39,7 +41,7 @@ const status = [
 
 // ==============================|| DASHBOARD DEFAULT - TOTAL GROWTH BAR CHART ||============================== //
 
-const TotalGrowthBarChart = ({ isLoading }) => {
+const TotalGrowthBarChart = ({ isLoading, stackedBarChartData, setStackedBarChartData }) => {
   const [value, setValue] = useState('month');
   const theme = useTheme();
   const customization = useSelector((state) => state.customization);
@@ -85,7 +87,17 @@ const TotalGrowthBarChart = ({ isLoading }) => {
         labels: {
           colors: grey500
         }
-      }
+      },
+      series: [
+        {
+          name: 'Count',
+          data: [50, 50, 50]
+        },
+        {
+          name: 'Amount',
+          data: [100, 100, 100]
+        }
+      ]
     };
 
     // do not load chart when loading
@@ -93,6 +105,47 @@ const TotalGrowthBarChart = ({ isLoading }) => {
       ApexCharts.exec(`bar-chart`, 'updateOptions', newChartData);
     }
   }, [navType, primary200, primaryDark, secondaryMain, secondaryLight, primary, darkLight, grey200, isLoading, grey500]);
+
+  useEffect(() => {
+    const countArray = stackedBarChartData.map((item) => item.count * 1000);
+    const projectedAmountArray = stackedBarChartData.map((item) => item.projectedAmount);
+    const salesPersonNameArray = stackedBarChartData.map((item) => item.salesPersonName);
+
+    const newChartData = {
+      ...chartData.options,
+
+      series: [
+        {
+          name: 'Count',
+          data: countArray
+        },
+        {
+          name: 'Amount',
+          data: projectedAmountArray
+        }
+      ],
+      xaxis: {
+        type: 'category',
+        categories: salesPersonNameArray
+      }
+    };
+
+    // do not load chart when loading
+    if (!isLoading) {
+      ApexCharts.exec(`bar-chart`, 'updateOptions', newChartData);
+    }
+  }, [stackedBarChartData]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const range = calculateDateRange(value);
+      const dataWithRange = await fetchSalesDashboardData(range.fromDate, range.toDate);
+      console.log('dataWithRange', dataWithRange);
+      setStackedBarChartData(dataWithRange.StackedBarChartData);
+    };
+
+    fetchData(); // Invoke the async function immediately
+  }, [value]);
 
   return (
     <>
