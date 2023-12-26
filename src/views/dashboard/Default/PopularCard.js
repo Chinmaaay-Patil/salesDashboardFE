@@ -40,7 +40,7 @@ const status = [
 
 // ==============================|| DASHBOARD DEFAULT - TOTAL GROWTH BAR CHART ||============================== //
 
-const TotalGrowthBarChart = ({ isLoading }) => {
+const TotalGrowthBarChart = ({ isLoading, donoutChartData }) => {
   const [value, setValue] = useState('month');
   const theme = useTheme();
   const customization = useSelector((state) => state.customization);
@@ -123,7 +123,7 @@ const TotalGrowthBarChart = ({ isLoading }) => {
               </Grid>
             </Grid>
             <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center', pointerEvents: 'none' }}>
-              <DonutChartsCustom />
+              <DonutChartsCustom donoutChartData={donoutChartData} />
             </Grid>
           </Grid>
         </MainCard>

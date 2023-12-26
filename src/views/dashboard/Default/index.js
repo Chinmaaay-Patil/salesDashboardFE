@@ -50,6 +50,7 @@ const Dashboard = () => {
 
   const [salesListData, setSalesListData] = useState([]);
   const [salesDashboardData, setSalesDashboardData] = useState([]);
+  const [donoutChartData, setDonoutChartData] = useState([]);
   console.log('salesDashboardData', salesDashboardData);
 
   const cardsData = [
@@ -123,13 +124,14 @@ const Dashboard = () => {
           bgColor: cardItem.bgColor
         };
       });
+      setDonoutChartData(response.data.table1[0]);
 
       setSalesDashboardData(mergedArray);
     } catch (error) {
       console.error('Error fetching sales data:', error);
     }
   };
-
+  console.log('doo', donoutChartData);
   // Example: Call the API on component mount
   useEffect(() => {
     const salesPersonID = 0;
@@ -205,7 +207,7 @@ const Dashboard = () => {
       <Grid item xs={12}>
         <Grid container spacing={gridSpacing}>
           <Grid item lg={6} xs={12} md={8}>
-            <PopularCard isLoading={isLoading} />
+            <PopularCard isLoading={isLoading} donoutChartData={donoutChartData} />
           </Grid>{' '}
           <Grid item lg={6} xs={12} md={4}>
             <TotalGrowthBarChart isLoading={isLoading} />
