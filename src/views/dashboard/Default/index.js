@@ -43,13 +43,12 @@ const Dashboard = () => {
     { label: 'Fight Club', year: 1999 }
   ];
 
-  const [salesDashboardDataDates, setSalesDashboardDataDates] = useState({ fromDate: '1999-10-24', toDate: getTodayDate() });
+  const [salesDashboardDataDates, setSalesDashboardDataDates] = useState({ fromDate: getTodayDate(), toDate: getTodayDate() });
 
-  const [salesListData, setSalesListData] = useState([]);
   const [salesDashboardData, setSalesDashboardData] = useState([]);
   const [donoutChartData, setDonoutChartData] = useState([]);
   const [stackedBarChartData, setStackedBarChartData] = useState([]);
-
+  console.log('salesDashboardData', salesDashboardData);
   // Function to make API call
   // const fetchSalesListData = async (fromDate, toDate, salesPersonID, versionID, stateID) => {
   //   try {
@@ -76,6 +75,13 @@ const Dashboard = () => {
     setSalesDashboardData(fetDashboardData.SalesDashboardData);
   }, []); // Empty dependency
 
+  async function handleFilterOptionsChange() {
+    const fetDashboardData = await fetchSalesDashboardData(salesDashboardDataDates.fromDate, salesDashboardDataDates.toDate);
+
+    setDonoutChartData(fetDashboardData.DonoutChartData);
+    setStackedBarChartData(fetDashboardData.StackedBarChartData);
+    setSalesDashboardData(fetDashboardData.SalesDashboardData);
+  }
   return (
     <Grid container spacing={gridSpacing}>
       <Grid item xs={12}>
@@ -112,6 +118,7 @@ const Dashboard = () => {
                 width: '100%',
                 borderRadius: 3
               }}
+              onClick={handleFilterOptionsChange}
             >
               Filter
             </Button>
