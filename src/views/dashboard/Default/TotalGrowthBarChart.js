@@ -140,7 +140,7 @@ const TotalGrowthBarChart = ({ isLoading, stackedBarChartData, setStackedBarChar
     const fetchData = async () => {
       const range = calculateDateRange(value);
       const dataWithRange = await fetchSalesDashboardData(range.fromDate, range.toDate);
-      console.log('dataWithRange', dataWithRange);
+
       setStackedBarChartData(dataWithRange.StackedBarChartData);
     };
 

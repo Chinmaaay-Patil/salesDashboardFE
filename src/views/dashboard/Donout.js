@@ -3,8 +3,6 @@ import { useEffect } from 'react';
 import ReactApexChart from 'react-apexcharts';
 
 const DonutChartsCustom = ({ donoutChartData }) => {
-  console.log('donoutChartData', donoutChartData);
-
   useEffect(() => {
     setState({
       ...state,
@@ -79,7 +77,6 @@ const DonutChartsCustom = ({ donoutChartData }) => {
       dataLabels: {
         enabled: true,
         formatter: function (val, opts) {
-          console.log('val', val);
           return val.toFixed(2) + '%';
         },
         style: {

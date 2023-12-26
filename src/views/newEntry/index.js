@@ -27,7 +27,6 @@ const MyForm = () => {
       attachment: null
     },
     onSubmit: (values) => {
-      console.log(values);
       // Add logic for form submission
     }
   });
