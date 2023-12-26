@@ -62,7 +62,7 @@ const EarningCard = ({ isLoading, cardData }) => {
                 <Grid container justifyContent="space-between">
                   <Grid item>
                     {' '}
-                    <Typography sx={{ fontSize: '1.3rem', fontWeight: 500, mr: 1, mb: 0.75, zIndex: 9 }}>{cardData.title}</Typography>
+                    <Typography sx={{ fontSize: '1.3rem', fontWeight: 500, mr: 1, mb: 0.75, zIndex: 9 }}>{cardData.leadStatus}</Typography>
                   </Grid>
                 </Grid>
               </Grid>
@@ -78,7 +78,7 @@ const EarningCard = ({ isLoading, cardData }) => {
                 <img alt="demo" src={cardData.icon} width={50} />
                 <Typography sx={{ fontSize: '2.5rem', fontWeight: 500, mr: 1, mb: 0.75 }}>{cardData.count}</Typography>
                 <Typography sx={{ fontSize: '0.8rem', fontWeight: 500, mr: 1, mb: 0.75 }}>
-                  {cardData.opportunitiesCount} opportunities
+                  {cardData.opportunitiesCount && `${cardData.opportunitiesCount} opportunities`}
                 </Typography>
               </Grid>
             </Grid>

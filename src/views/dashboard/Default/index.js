@@ -28,10 +28,34 @@ const Dashboard = () => {
       navigate('/signin');
     }
   }, []);
+
+  const top100Films = [
+    { label: 'The Shawshank Redemption', year: 1994 },
+    { label: 'The Godfather', year: 1972 },
+    { label: 'The Godfather: Part II', year: 1974 },
+    { label: 'The Dark Knight', year: 2008 },
+    { label: '12 Angry Men', year: 1957 },
+    { label: "Schindler's List", year: 1993 },
+    { label: 'Pulp Fiction', year: 1994 },
+    {
+      label: 'The Lord of the Rings: The Return of the King',
+      year: 2003
+    },
+    { label: 'The Good, the Bad and the Ugly', year: 1966 },
+    { label: 'Fight Club', year: 1999 }
+  ];
+
+  const [salesDashboardDataDates, setSalesDashboardDataDates] = useState({ fromDate: '1999-10-24', toDate: getTodayDate() });
+  console.log('DateDateDate', process.env.REACT_APP_BASE_URL, process.env.REACT_APP_VERSION);
+
+  const [salesListData, setSalesListData] = useState([]);
+  const [salesDashboardData, setSalesDashboardData] = useState([]);
+  console.log('salesDashboardData', salesDashboardData);
+
   const cardsData = [
     {
       id: 1,
-      title: 'New Leads',
+      title: 'New Lead',
       icon: newLeads,
       count: 1024,
       opportunitiesCount: 0,
@@ -62,38 +86,45 @@ const Dashboard = () => {
       bgColor: 'linear-gradient(46deg, #F5915A 39.61%, #FFC693 96.01%)'
     }
   ];
-  const top100Films = [
-    { label: 'The Shawshank Redemption', year: 1994 },
-    { label: 'The Godfather', year: 1972 },
-    { label: 'The Godfather: Part II', year: 1974 },
-    { label: 'The Dark Knight', year: 2008 },
-    { label: '12 Angry Men', year: 1957 },
-    { label: "Schindler's List", year: 1993 },
-    { label: 'Pulp Fiction', year: 1994 },
-    {
-      label: 'The Lord of the Rings: The Return of the King',
-      year: 2003
-    },
-    { label: 'The Good, the Bad and the Ugly', year: 1966 },
-    { label: 'Fight Club', year: 1999 }
-  ];
-
-  const [dashboardDates, setDashboardDates] = useState({ fromDate: getTodayDate(), toDate: getTodayDate() });
-  console.log('DateDateDate', process.env.REACT_APP_BASE_URL, process.env.REACT_APP_VERSION);
-
-  const [salesData, setSalesData] = useState([]);
-
   // Function to make API call
-  const fetchSalesData = async (fromDate, toDate, salesPersonID, versionID, stateID) => {
-    const encodedFromDate = encodeURIComponent(fromDate);
-    const encodedToDate = encodeURIComponent(toDate);
-
+  // const fetchSalesListData = async (fromDate, toDate, salesPersonID, versionID, stateID) => {
+  //   try {
+  //     const response = await commonAPI.get(
+  //       `/SalesList?FromDate=${fromDate}&ToDate=${toDate}&SalesPersonID=${salesPersonID}&VersionID=${versionID}&StateID=${stateID}`
+  //     );
+  //     console.log('response', response);
+  //     setSalesListData(response.data);
+  //   } catch (error) {
+  //     console.error('Error fetching sales data:', error);
+  //   }
+  // };
+  const fetchSalesDashboardData = async (fromDate, toDate, salesPersonID) => {
     try {
-      const response = await commonAPI.get(
-        `/SalesList?FromDate=${encodedFromDate}&ToDate=${encodedToDate}&SalesPersonID=0&VersionID=0&StateID=0`
-      );
-      console.log('response', response);
-      setSalesData(response.data);
+      const response = await commonAPI.get(`/SalesDashboard?FromDate=${fromDate}&ToDate=${toDate}&SalesPersonID=${salesPersonID}`);
+
+      const mergedArray = cardsData.map((cardItem) => {
+        // Find the corresponding tableItem based on leadStatus
+        const matchingTableItem = response.data.table.find((tableItem) => tableItem.leadStatus === cardItem.title);
+
+        // If a match is found, return a new object with updated properties
+        if (matchingTableItem) {
+          return {
+            ...matchingTableItem,
+            icon: cardItem.icon,
+            bgColor: cardItem.bgColor
+          };
+        }
+
+        // If no match is found, return a new object with default properties
+        return {
+          leadStatus: cardItem.title,
+          count: 0, // You may set a default value for count
+          icon: cardItem.icon,
+          bgColor: cardItem.bgColor
+        };
+      });
+
+      setSalesDashboardData(mergedArray);
     } catch (error) {
       console.error('Error fetching sales data:', error);
     }
@@ -101,13 +132,13 @@ const Dashboard = () => {
 
   // Example: Call the API on component mount
   useEffect(() => {
-    const fromDate = '2023-12-23';
-    const toDate = '2023-12-27';
     const salesPersonID = 0;
     const versionID = 0;
     const stateID = 0;
 
-    fetchSalesData(fromDate, toDate, salesPersonID, versionID, stateID);
+    // fetchSalesListData(salesDashboardDataDates.fromDate, salesDashboardDataDates.toDate, salesPersonID, versionID, stateID);
+
+    fetchSalesDashboardData(salesDashboardDataDates.fromDate, salesDashboardDataDates.toDate, salesPersonID);
   }, []); // Empty dependency
 
   return (
@@ -118,15 +149,15 @@ const Dashboard = () => {
           <Grid item lg={3} md={6} sm={6} xs={12}>
             <DateComponent
               label="From Date"
-              value={dashboardDates.fromDate}
-              onChange={(e) => setDashboardDates({ ...dashboardDates, fromDate: e.target.value })}
+              value={salesDashboardDataDates.fromDate}
+              onChange={(e) => setSalesDashboardDataDates({ ...salesDashboardDataDates, fromDate: e.target.value })}
             />
           </Grid>{' '}
           <Grid item lg={3} md={6} sm={6} xs={12}>
             <DateComponent
               label="To Date"
-              value={dashboardDates.toDate}
-              onChange={(e) => setDashboardDates({ ...dashboardDates, toDate: e.target.value })}
+              value={salesDashboardDataDates.toDate}
+              onChange={(e) => setSalesDashboardDataDates({ ...salesDashboardDataDates, toDate: e.target.value })}
             />
           </Grid>{' '}
           <Grid item lg={3} md={6} sm={6} xs={12}>
@@ -152,7 +183,7 @@ const Dashboard = () => {
           </Grid>
         </Grid>
         <Grid container spacing={gridSpacing}>
-          {cardsData.map((cardData, index) => {
+          {salesDashboardData.map((cardData, index) => {
             return (
               <Grid key={index} item lg={3} md={6} sm={6} xs={12}>
                 <EarningCard isLoading={isLoading} cardData={cardData} />
