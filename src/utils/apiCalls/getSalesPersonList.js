@@ -2,7 +2,7 @@ import commonAPI from 'utils/axiosConfig';
 
 export const getSalesPersonList = async () => {
   try {
-    const response = await commonAPI.get(`/api/Dashboard/SalesPersons`);
+    const response = await commonAPI.get(`/api/Dashboard/GetSalesPerson`);
 
     const salesPersonsData = response.data;
 
