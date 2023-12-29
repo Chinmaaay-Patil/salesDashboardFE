@@ -39,7 +39,9 @@ const cardsData = [
 ];
 export const fetchSalesDashboardData = async (fromDate, toDate, salesPersonID) => {
   try {
-    const response = await commonAPI.get(`/SalesDashboard?FromDate=${fromDate}&ToDate=${toDate}&SalesPersonID=${salesPersonID}`);
+    const response = await commonAPI.get(
+      `/api/Dashboard/GetSalesDashboard?FromDate=${fromDate}&ToDate=${toDate}&SalesPersonID=${salesPersonID}`
+    );
 
     const mergedArray = cardsData.map((cardItem) => {
       // Find the corresponding tableItem based on leadStatus

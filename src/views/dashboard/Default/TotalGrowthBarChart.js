@@ -136,16 +136,16 @@ const TotalGrowthBarChart = ({ isLoading, stackedBarChartData, setStackedBarChar
     }
   }, [stackedBarChartData]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const range = calculateDateRange(value);
-      const dataWithRange = await fetchSalesDashboardData(range.fromDate, range.toDate);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const range = calculateDateRange(value);
+  //     const dataWithRange = await fetchSalesDashboardData(range.fromDate, range.toDate);
 
-      setStackedBarChartData(dataWithRange.StackedBarChartData);
-    };
+  //     setStackedBarChartData(dataWithRange.StackedBarChartData);
+  //   };
 
-    fetchData(); // Invoke the async function immediately
-  }, [value]);
+  //   fetchData(); // Invoke the async function immediately
+  // }, [value]);
 
   return (
     <>

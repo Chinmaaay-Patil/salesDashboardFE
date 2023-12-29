@@ -97,16 +97,16 @@ const TotalGrowthBarChart = ({ isLoading, donoutChartData, setDonoutChartData })
     }
   }, [navType, primary200, primaryDark, secondaryMain, secondaryLight, primary, darkLight, grey200, isLoading, grey500]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const range = calculateDateRange(value);
-      const dataWithRange = await fetchSalesDashboardData(range.fromDate, range.toDate);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const range = calculateDateRange(value);
+  //     const dataWithRange = await fetchSalesDashboardData(range.fromDate, range.toDate);
 
-      setDonoutChartData(dataWithRange.DonoutChartData);
-    };
+  //     setDonoutChartData(dataWithRange.DonoutChartData);
+  //   };
 
-    fetchData(); // Invoke the async function immediately
-  }, [value]);
+  //   fetchData(); // Invoke the async function immediately
+  // }, [value]);
 
   return (
     <>

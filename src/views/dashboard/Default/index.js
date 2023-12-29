@@ -14,6 +14,8 @@ import DateComponent from 'ui-component/DatePicker';
 import { getTodayDate } from 'utils/getTodaysDate';
 import commonAPI from 'utils/axiosConfig';
 import { fetchSalesDashboardData } from 'utils/fetchSalesDashboardData';
+import { getSalesPersonList } from 'utils/apiCalls/getSalesPersonList';
+import { SalesPerson } from 'constants/salesPerson';
 
 // ==============================|| DEFAULT DASHBOARD ||============================== //
 
@@ -25,50 +27,28 @@ const Dashboard = () => {
     if (!sessionStorage.getItem('apikey')) {
       navigate('/signin');
     }
+
+    const data = getSalesPersonList();
+
+    console.log('res', data);
   }, []);
 
-  const top100Films = [
-    { label: 'The Shawshank Redemption', year: 1994 },
-    { label: 'The Godfather', year: 1972 },
-    { label: 'The Godfather: Part II', year: 1974 },
-    { label: 'The Dark Knight', year: 2008 },
-    { label: '12 Angry Men', year: 1957 },
-    { label: "Schindler's List", year: 1993 },
-    { label: 'Pulp Fiction', year: 1994 },
-    {
-      label: 'The Lord of the Rings: The Return of the King',
-      year: 2003
-    },
-    { label: 'The Good, the Bad and the Ugly', year: 1966 },
-    { label: 'Fight Club', year: 1999 }
-  ];
-
-  const [salesDashboardDataDates, setSalesDashboardDataDates] = useState({ fromDate: getTodayDate(), toDate: getTodayDate() });
+  const [salesDashboardDataDates, setSalesDashboardDataDates] = useState({
+    fromDate: getTodayDate(),
+    toDate: getTodayDate(),
+    salesPersonId: -1
+  });
 
   const [salesDashboardData, setSalesDashboardData] = useState([]);
   const [donoutChartData, setDonoutChartData] = useState([]);
   const [stackedBarChartData, setStackedBarChartData] = useState([]);
-  console.log('salesDashboardData', salesDashboardData);
-  // Function to make API call
-  // const fetchSalesListData = async (fromDate, toDate, salesPersonID, versionID, stateID) => {
-  //   try {
-  //     const response = await commonAPI.get(
-  //       `/SalesList?FromDate=${fromDate}&ToDate=${toDate}&SalesPersonID=${salesPersonID}&VersionID=${versionID}&StateID=${stateID}`
-  //     );
-  //     console.log('response', response);
-  //     setSalesListData(response.data);
-  //   } catch (error) {
-  //     console.error('Error fetching sales data:', error);
-  //   }
-  // };
 
-  // Example: Call the API on component mount
   useEffect(async () => {
-    const salesPersonID = 0;
-    const versionID = 0;
-    const stateID = 0;
-
-    const fetDashboardData = await fetchSalesDashboardData(salesDashboardDataDates.fromDate, salesDashboardDataDates.toDate, salesPersonID);
+    const fetDashboardData = await fetchSalesDashboardData(
+      salesDashboardDataDates.fromDate,
+      salesDashboardDataDates.toDate,
+      salesDashboardDataDates.salesPersonId
+    );
 
     setDonoutChartData(fetDashboardData.DonoutChartData);
     setStackedBarChartData(fetDashboardData.StackedBarChartData);
@@ -76,7 +56,11 @@ const Dashboard = () => {
   }, []); // Empty dependency
 
   async function handleFilterOptionsChange() {
-    const fetDashboardData = await fetchSalesDashboardData(salesDashboardDataDates.fromDate, salesDashboardDataDates.toDate);
+    const fetDashboardData = await fetchSalesDashboardData(
+      salesDashboardDataDates.fromDate,
+      salesDashboardDataDates.toDate,
+      salesDashboardDataDates.salesPersonId
+    );
 
     setDonoutChartData(fetDashboardData.DonoutChartData);
     setStackedBarChartData(fetDashboardData.StackedBarChartData);
@@ -103,11 +87,15 @@ const Dashboard = () => {
           </Grid>{' '}
           <Grid item lg={3} md={6} sm={6} xs={12}>
             <Autocomplete
+              onChange={(event, newValue) => {
+                setSalesDashboardDataDates({ ...salesDashboardDataDates, salesPersonId: newValue.sid });
+              }}
               disablePortal
               id="combo-box-demo"
               size="small"
               sx={{ width: '100%' }}
-              options={top100Films}
+              options={SalesPerson}
+              getOptionLabel={(option) => option.salesPersonName}
               renderInput={(params) => <TextField {...params} label="Sales Person" />}
             />
           </Grid>
