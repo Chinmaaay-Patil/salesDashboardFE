@@ -5,6 +5,12 @@ import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import DatePicker from '@mui/lab/DatePicker';
 import FileUpload from './FileUpload';
 import { useState } from 'react';
+import { getSalesPersonList } from 'utils/apiCalls/getSalesPersonList';
+import { getSourceLeads } from 'utils/apiCalls/getSourceLeadsList';
+import { getSourcePerson } from 'utils/apiCalls/getSourcePersonList';
+import { getStateList } from 'utils/apiCalls/getStateList';
+import { getVersionList } from 'utils/apiCalls/getVersionList';
+import { useEffect } from 'react';
 const MyForm = () => {
   const formik = useFormik({
     initialValues: {
@@ -52,6 +58,20 @@ const MyForm = () => {
     return timestamp + randomNum;
   }
   const [uniqueId] = useState(generateUniqueId());
+
+  useEffect(() => {
+    const getSalesPersonListData = getSalesPersonList();
+    const getSourceLeadsListData = getSourceLeads();
+    const getSourcePersonListData = getSourcePerson();
+    const getStateListData = getStateList();
+    const getVersionListData = getVersionList();
+
+    console.log('getSalesPersonListData', getSalesPersonListData);
+    console.log('getSourceLeadsListData', getSourceLeadsListData);
+    console.log('getSourcePersonListData', getSourcePersonListData);
+    console.log('getStateListData', getStateListData);
+    console.log('getVersionListData', getVersionListData);
+  }, []);
   return (
     <Box>
       <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between' }}>

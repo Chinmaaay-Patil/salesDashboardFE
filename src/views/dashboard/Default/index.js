@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 // material-ui
-import { Autocomplete, Box, Button, Grid, TextField, Typography } from '@mui/material';
+import { Autocomplete, Button, Grid, TextField, Typography } from '@mui/material';
 
 // project imports
 import EarningCard from './EarningCard';
@@ -12,9 +11,7 @@ import TotalGrowthBarChart from './TotalGrowthBarChart';
 import { useNavigate } from 'react-router';
 import DateComponent from 'ui-component/DatePicker';
 import { getTodayDate } from 'utils/getTodaysDate';
-import commonAPI from 'utils/axiosConfig';
 import { fetchSalesDashboardData } from 'utils/fetchSalesDashboardData';
-import { getSalesPersonList } from 'utils/apiCalls/getSalesPersonList';
 import { SalesPerson } from 'constants/salesPerson';
 
 // ==============================|| DEFAULT DASHBOARD ||============================== //
@@ -27,10 +24,6 @@ const Dashboard = () => {
     if (!sessionStorage.getItem('apikey')) {
       navigate('/signin');
     }
-
-    const data = getSalesPersonList();
-
-    console.log('res', data);
   }, []);
 
   const [salesDashboardDataDates, setSalesDashboardDataDates] = useState({
@@ -43,7 +36,7 @@ const Dashboard = () => {
   const [donoutChartData, setDonoutChartData] = useState([]);
   const [stackedBarChartData, setStackedBarChartData] = useState([]);
 
-  useEffect(async () => {
+  async function fetchdataDashboard() {
     const fetDashboardData = await fetchSalesDashboardData(
       salesDashboardDataDates.fromDate,
       salesDashboardDataDates.toDate,
@@ -53,6 +46,10 @@ const Dashboard = () => {
     setDonoutChartData(fetDashboardData.DonoutChartData);
     setStackedBarChartData(fetDashboardData.StackedBarChartData);
     setSalesDashboardData(fetDashboardData.SalesDashboardData);
+  }
+
+  useEffect(() => {
+    fetchdataDashboard();
   }, []); // Empty dependency
 
   async function handleFilterOptionsChange() {
