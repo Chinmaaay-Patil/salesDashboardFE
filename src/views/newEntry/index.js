@@ -29,9 +29,7 @@ const MyForm = () => {
     state: Yup.object().required('State is required'),
     detailRequirement: Yup.string().required('Detail Requirement is required'),
     comment: Yup.string().required('Comment is required'),
-    followupDate: Yup.date().required('Followup Date is required'),
-    downloadPredefinedFile: Yup.boolean().required('Download Predefined File is required'),
-    attachment: Yup.mixed().required('Attachment is required') // You might want to adjust this based on the actual type of attachment
+    followupDate: Yup.date().required('Followup Date is required')
   });
   const formik = useFormik({
     initialValues: {
@@ -56,7 +54,7 @@ const MyForm = () => {
     validationSchema: validationSchema,
     onSubmit: (values) => {
       createSalesTrack(values).then(() => {
-        // handleReset();
+        handleReset();
       });
     }
   });
