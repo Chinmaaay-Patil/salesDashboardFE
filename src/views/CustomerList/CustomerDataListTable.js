@@ -13,12 +13,15 @@ import Paper from '@mui/material/Paper';
 import Checkbox from '@mui/material/Checkbox';
 import { visuallyHidden } from '@mui/utils';
 import { Button } from '@mui/material';
+import { useState } from 'react';
+import { useEffect } from 'react';
 
-export default function EnhancedTable({ selectedColumns }) {
+export default function EnhancedTable({ selectedColumns, salesTrackData }) {
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('LabName');
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
+
   //   const [columns, setColumns] = React.useState([
   //     { id: 'LabName', label: 'Lab Name', visible: true },
   //     { id: 'OwnerName', label: 'Owner Name', visible: true },
@@ -43,43 +46,12 @@ export default function EnhancedTable({ selectedColumns }) {
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
   };
-  function getRandomDate(start, end) {
-    const startDate = new Date(start);
-    const endDate = new Date(end);
-    const randomDate = new Date(startDate.getTime() + Math.random() * (endDate.getTime() - startDate.getTime()));
-    return randomDate.toISOString().split('T')[0]; // Return the date in 'YYYY-MM-DD' format
-  }
-  // Replace this with your data
-  function generateRows(numRows) {
-    const rows = [];
 
-    for (let i = 1; i <= numRows; i++) {
-      const currentDate = getRandomDate('2011-01-01', '2023-12-31');
-      const followupDate = getRandomDate('2011-01-02', '2023-12-31');
-      rows.push({
-        id: i,
-        LabName: `Lab${i}`,
-        OwnerName: `Owner${i}`,
-        Mobile: `123-456-${i * 1111}`,
-        Email: `owner${i}@lab.com`,
-        Address: `Address ${i}`,
-        Date: currentDate,
-        SourceOfLead: `Source ${i}`,
-        SourcePersonName: `Person ${i}`,
-        Version: `Version ${i}`,
-        Amount: i * 50,
-        SalesPerson: `Sales ${i}`,
-        State: 'NewLead State',
-        DetailRequirement: `Details for Lab ${i}`,
-        Comment: `Comment ${i}`,
-        FollowupDate: followupDate
-      });
-    }
+  const [rows, setRows] = useState([]);
 
-    return rows;
-  }
-
-  const rows = generateRows(50);
+  useEffect(() => {
+    setRows(salesTrackData);
+  }, [salesTrackData]);
 
   function EnhancedTableHead(props) {
     const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } = props;
@@ -201,10 +173,19 @@ export default function EnhancedTable({ selectedColumns }) {
     }
     return 0;
   }
-  const visibleRows = React.useMemo(
-    () => stableSort(rows, getComparator(order, orderBy)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
-    [order, orderBy, page, rowsPerPage]
-  );
+
+  const [visibleRows, setVisibleRows] = useState([]);
+
+  useEffect(() => {
+    const temp = stableSort(rows, getComparator(order, orderBy)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+    console.log('temppp.tme', temp);
+    setVisibleRows(temp);
+    // eslint-disable-next-line
+  }, [order, orderBy, page, rowsPerPage, rows]);
+  // const visibleRows = React.useMemo(
+  //   () => stableSort(rows, getComparator(order, orderBy)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
+  //   [order, orderBy, page, rowsPerPage]
+  // );
   // Inside EnhancedTable component
 
   // ... (inside the component)
@@ -247,14 +228,15 @@ export default function EnhancedTable({ selectedColumns }) {
                         }}
                       />
                     </TableCell>
-                    {selectedColumns.map(
-                      (column) =>
+                    {selectedColumns.map((column) => {
+                      return (
                         column.visible && (
                           <TableCell key={column.id} align="left" padding="normal">
                             {row[column.id]}
                           </TableCell>
                         )
-                    )}
+                      );
+                    })}
                   </TableRow>
                 );
               })}

@@ -20,7 +20,7 @@ const MyForm = () => {
       mobile: '',
       email: '',
       address: '',
-      date: null,
+      date: new Date().toISOString().split('T')[0],
       sourceOfLead: '',
       sourcePersonName: '',
       version: '',
@@ -29,13 +29,13 @@ const MyForm = () => {
       state: 'NewLead State',
       detailRequirement: '',
       comment: '',
-      followupDate: null,
+      followupDate: new Date().toISOString().split('T')[0],
       downloadPredefinedFile: false,
       attachment: null
     },
     onSubmit: (values) => {
       createSalesTrack(values).then(() => {
-        handleReset();
+        // handleReset();
       });
     }
   });
