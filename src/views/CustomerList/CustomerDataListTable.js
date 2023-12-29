@@ -15,6 +15,7 @@ import { visuallyHidden } from '@mui/utils';
 import { Button } from '@mui/material';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import renderCustomerTableDataListTableBody from 'utils/renderCustomerTableDataListTableBody';
 
 export default function EnhancedTable({ selectedColumns, salesTrackData }) {
   const [order, setOrder] = React.useState('asc');
@@ -52,7 +53,7 @@ export default function EnhancedTable({ selectedColumns, salesTrackData }) {
   useEffect(() => {
     setRows(salesTrackData);
   }, [salesTrackData]);
-
+  console.log('salesTraxxxckDatasalesTrackData', salesTrackData);
   function EnhancedTableHead(props) {
     const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } = props;
     const createSortHandler = (property) => (event) => {
@@ -230,11 +231,10 @@ export default function EnhancedTable({ selectedColumns, salesTrackData }) {
                     </TableCell>
                     {selectedColumns.map((column) => {
                       return (
-                        column.visible && (
-                          <TableCell key={column.id} align="left" padding="normal">
-                            {row[column.id]}
-                          </TableCell>
-                        )
+                        column.visible && renderCustomerTableDataListTableBody(column, row)
+                        // <TableCell key={column.id} align="left" padding="normal">
+                        //   {row[column.id]}
+                        // </TableCell>ss
                       );
                     })}
                   </TableRow>
