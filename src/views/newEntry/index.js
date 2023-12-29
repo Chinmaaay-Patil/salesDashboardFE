@@ -11,6 +11,7 @@ import { getSourcePerson } from 'utils/apiCalls/getSourcePersonList';
 import { getStateList } from 'utils/apiCalls/getStateList';
 import { getVersionList } from 'utils/apiCalls/getVersionList';
 import { useEffect } from 'react';
+import createSalesTrack from 'utils/apiCalls/createSalesTrack';
 const MyForm = () => {
   const formik = useFormik({
     initialValues: {
@@ -33,19 +34,22 @@ const MyForm = () => {
       attachment: null
     },
     onSubmit: (values) => {
-      // Add logic for form submission
+      createSalesTrack(values).then(() => {
+        handleReset();
+      });
     }
   });
 
-  const sourceOfLeadOptions = ['Option 1', 'Option 2', 'Option 3'];
-  const sourcePersonOptions = ['Person 1', 'Person 2', 'Person 3'];
-  const versionOptions = ['Version 1', 'Version 2', 'Version 3'];
-  const salesPersonOptions = ['Sales Person 1', 'Sales Person 2', 'Sales Person 3'];
-  const stateOptions = ['State 1', 'State 2', 'State 3'];
+  const [sourceOfLeadOptions, setSourceOfLeadOptions] = useState([]);
+  const [sourcePersonOptions, setSourcePersonOptions] = useState([]);
+  const [versionOptions, setVersionOptions] = useState([]);
+  const [salesPersonOptions, setSalesPersonOptions] = useState([]);
+  const [stateOptions, setStateOptions] = useState([]);
 
   const handleReset = () => {
     formik.resetForm();
     formik.setFieldValue('date', new Date().toISOString().split('T')[0]);
+    formik.setFieldValue('followupDate', new Date().toISOString().split('T')[0]);
   };
   const handleFileUpload = (files) => {
     // Handle the uploaded files here
@@ -59,27 +63,34 @@ const MyForm = () => {
   }
   const [uniqueId] = useState(generateUniqueId());
 
-  useEffect(() => {
-    const getSalesPersonListData = getSalesPersonList();
-    const getSourceLeadsListData = getSourceLeads();
-    const getSourcePersonListData = getSourcePerson();
-    const getStateListData = getStateList();
-    const getVersionListData = getVersionList();
+  async function fetchDropDOwnData() {
+    const getSalesPersonListData = await getSalesPersonList();
+    const getSourceLeadsListData = await getSourceLeads();
+    const getSourcePersonListData = await getSourcePerson();
+    const getStateListData = await getStateList();
+    const getVersionListData = await getVersionList();
 
-    console.log('getSalesPersonListData', getSalesPersonListData);
-    console.log('getSourceLeadsListData', getSourceLeadsListData);
-    console.log('getSourcePersonListData', getSourcePersonListData);
-    console.log('getStateListData', getStateListData);
-    console.log('getVersionListData', getVersionListData);
+    setSourceOfLeadOptions(getSourceLeadsListData);
+
+    setSourcePersonOptions(getSourcePersonListData);
+    setVersionOptions(getVersionListData);
+    setSalesPersonOptions(getSalesPersonListData);
+
+    setStateOptions(getStateListData);
+  }
+
+  useEffect(() => {
+    fetchDropDOwnData();
   }, []);
+
   return (
     <Box>
-      <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between' }}>
+      {/* <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between' }}>
         <Button variant="contained">New DB ID - {uniqueId} </Button>
         <Button component="label" variant="contained" startIcon={<CloudDownloadIcon />}>
           Download file
         </Button>
-      </Box>
+      </Box> */}
       <form onSubmit={formik.handleSubmit}>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
@@ -107,11 +118,13 @@ const MyForm = () => {
             <FormControl fullWidth>
               <InputLabel>Source of Lead</InputLabel>
               <Select label="Source of Lead" name="sourceOfLead" value={formik.values.sourceOfLead} onChange={formik.handleChange}>
-                {sourceOfLeadOptions.map((option) => (
-                  <MenuItem key={option} value={option}>
-                    {option}
-                  </MenuItem>
-                ))}
+                {sourceOfLeadOptions.map((option) => {
+                  return (
+                    <MenuItem key={option.sid} value={option}>
+                      {option.sourceName}
+                    </MenuItem>
+                  );
+                })}
               </Select>
             </FormControl>
             <FormControl fullWidth>
@@ -122,11 +135,13 @@ const MyForm = () => {
                 value={formik.values.sourcePersonName}
                 onChange={formik.handleChange}
               >
-                {sourcePersonOptions.map((option) => (
-                  <MenuItem key={option} value={option}>
-                    {option}
-                  </MenuItem>
-                ))}
+                {sourcePersonOptions.map((option) => {
+                  return (
+                    <MenuItem key={option.spid} value={option}>
+                      {option.sourcePersonName}
+                    </MenuItem>
+                  );
+                })}
               </Select>
             </FormControl>
             <FormControl fullWidth>
@@ -136,16 +151,19 @@ const MyForm = () => {
                 name="version"
                 value={formik.values.version}
                 onChange={(value) => {
+                  console.log('valueeeee', value.target.value);
                   formik.handleChange(value);
-                  const selectedVersion = versionOptions.find((opt) => opt === value.target.value);
-                  formik.setFieldValue('amount', selectedVersion ? '100' : '');
+                  // const selectedVersion = versionOptions.find((opt) => opt === value.target.value);
+                  formik.setFieldValue('amount', value.target.value.estimatedCost ? value.target.value.estimatedCost : '');
                 }}
               >
-                {versionOptions.map((option) => (
-                  <MenuItem key={option} value={option}>
-                    {option}
-                  </MenuItem>
-                ))}
+                {versionOptions.map((option) => {
+                  return (
+                    <MenuItem key={option.vid} value={option}>
+                      {option.vesionName}
+                    </MenuItem>
+                  );
+                })}
               </Select>
             </FormControl>
             <TextField fullWidth label="Amount" name="amount" value={formik.values.amount} onChange={formik.handleChange} />
@@ -154,21 +172,26 @@ const MyForm = () => {
             <FormControl fullWidth>
               <InputLabel>Sales Person</InputLabel>
               <Select label="Sales Person" name="salesPerson" value={formik.values.salesPerson} onChange={formik.handleChange}>
-                {salesPersonOptions.map((option) => (
-                  <MenuItem key={option} value={option}>
-                    {option}
-                  </MenuItem>
-                ))}
+                {salesPersonOptions.map((option) => {
+                  return (
+                    <MenuItem key={option.sid} value={option}>
+                      {option.salesPersonName}
+                    </MenuItem>
+                  );
+                })}
               </Select>
             </FormControl>
             <FormControl fullWidth>
               <InputLabel>State</InputLabel>
               <Select label="State" name="state" value={formik.values.state} onChange={formik.handleChange}>
-                {stateOptions.map((option) => (
-                  <MenuItem key={option} value={option}>
-                    {option}
-                  </MenuItem>
-                ))}
+                {stateOptions.map((option) => {
+                  console.log('option', option);
+                  return (
+                    <MenuItem key={option.stid} value={option}>
+                      {option.stateName}
+                    </MenuItem>
+                  );
+                })}
               </Select>
             </FormControl>
             <TextField
