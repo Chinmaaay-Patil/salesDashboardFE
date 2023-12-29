@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { Button, Checkbox, FormControlLabel, MenuItem, Tooltip } from '@mui/material';
+import { Button, Checkbox, FormControlLabel, IconButton, MenuItem, Tooltip } from '@mui/material';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { useEffect } from 'react';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { styled, alpha } from '@mui/material/styles';
 import Menu from '@mui/material/Menu';
-
+import { Box } from '@mui/system';
+import ArrowCircleDownIcon from '@mui/icons-material/ArrowCircleDown';
+import DisplaySettingsIcon from '@mui/icons-material/DisplaySettings';
 const grid = 8;
 
 const getItemStyle = (isDragging, draggableStyle) => ({
@@ -97,20 +99,39 @@ const CustomerList = ({ selectedColumns, setSelectedColumns }) => {
   };
   return (
     <div>
-      <Tooltip title="Click to configure  column visibility and change the sequence">
-        <Button
-          id="demo-customized-button"
-          aria-controls={open ? 'demo-customized-menu' : undefined}
-          aria-haspopup="true"
-          aria-expanded={open ? 'true' : undefined}
-          variant="contained"
-          disableElevation
-          onClick={handleClick}
-          endIcon={<KeyboardArrowDownIcon />}
-        >
-          Configure columns
-        </Button>
-      </Tooltip>
+      <Box sx={{ display: 'flex', gap: 2 }}>
+        {' '}
+        <Tooltip title="Download Quotation">
+          <IconButton
+            color="secondary"
+            id="demo-customized-button"
+            aria-controls={open ? 'demo-customized-menu' : undefined}
+            aria-haspopup="true"
+            aria-expanded={open ? 'true' : undefined}
+            variant="outlined"
+            disableElevation
+            onClick={handleClick}
+            size="large"
+          >
+            <ArrowCircleDownIcon />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Click to configure  column visibility and change the sequence">
+          <IconButton
+            color="secondary"
+            id="demo-customized-button"
+            aria-controls={open ? 'demo-customized-menu' : undefined}
+            aria-haspopup="true"
+            aria-expanded={open ? 'true' : undefined}
+            variant="outlined"
+            disableElevation
+            onClick={handleClick}
+            size="large"
+          >
+            <DisplaySettingsIcon />
+          </IconButton>
+        </Tooltip>
+      </Box>
       <StyledMenu
         id="demo-customized-menu"
         MenuListProps={{

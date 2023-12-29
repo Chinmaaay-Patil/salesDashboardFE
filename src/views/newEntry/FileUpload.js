@@ -39,7 +39,9 @@ const FileUpload = ({ onFileUpload }) => {
         textAlign: 'center',
         border: '1px dotted gray',
         borderRadius: 5,
-        height: '100%'
+        height: '100%',
+        pointerEvents: 'none',
+        opacity: 0.5
       }}
     >
       <div

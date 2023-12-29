@@ -1,6 +1,6 @@
 import React from 'react';
 import DummyDataTable from './CustomerDataListTable';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, useMediaQuery } from '@mui/material';
 import ColumnsList from './ColumnsList';
 import { useState } from 'react';
 import { useEffect } from 'react';
@@ -36,9 +36,20 @@ function CustomerList() {
   useEffect(() => {
     fetchCustomerList();
   }, []);
+
+  const isMobile = useMediaQuery('(max-width: 600px)');
+  const isTablet = useMediaQuery('(max-width: 960px)');
   return (
     <Box>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          mb: 2,
+          flexDirection: isMobile ? 'column' : 'row',
+          alignItems: isMobile ? 'center' : 'left'
+        }}
+      >
         <Typography variant="h3">Customer List</Typography>
         <ColumnsList selectedColumns={selectedColumns} setSelectedColumns={setSelectedColumns} columns={columns} />
       </Box>

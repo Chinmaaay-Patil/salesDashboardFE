@@ -66,7 +66,7 @@ const Logo = () => {
     //   />
     // </svg>
 
-    <Typography variant="h3" sx={{ textAlign: 'center', justifyContent: 'center' }}>
+    <Typography variant="h3" sx={{ textAlign: 'center', justifyContent: 'center', color: '#ffffff' }}>
       Sales Dashboard
     </Typography>
   );

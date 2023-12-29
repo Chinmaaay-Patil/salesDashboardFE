@@ -16,6 +16,7 @@ import { SET_MENU } from 'store/actions';
 
 // assets
 import { IconChevronRight } from '@tabler/icons';
+import AuthFooter from 'ui-component/cards/AuthFooter';
 
 // styles
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({ theme, open }) => ({
@@ -62,7 +63,7 @@ const MainLayout = () => {
   const handleLeftDrawerToggle = () => {
     dispatch({ type: SET_MENU, opened: !leftDrawerOpened });
   };
-
+  console.log('theme', theme);
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
@@ -71,10 +72,12 @@ const MainLayout = () => {
         enableColorOnDark
         position="fixed"
         color="inherit"
-        elevation={0}
+        elevation={2}
         sx={{
-          bgcolor: theme.palette.background.default,
-          transition: leftDrawerOpened ? theme.transitions.create('width') : 'none'
+          bgcolor: theme.palette.secondary.main,
+          transition: leftDrawerOpened ? theme.transitions.create('width') : 'none',
+          // border: '2px solid red'
+          height: 70
         }}
       >
         <Toolbar>
@@ -89,7 +92,10 @@ const MainLayout = () => {
       <Main theme={theme} open={leftDrawerOpened}>
         {/* breadcrumb */}
         <Breadcrumbs separator={IconChevronRight} navigation={navigation} icon title rightAlign />
-        <Outlet />
+        <Outlet />{' '}
+        <Toolbar>
+          <AuthFooter />
+        </Toolbar>
       </Main>
       {/* <Customization /> */}
     </Box>
