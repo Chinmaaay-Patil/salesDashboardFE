@@ -40,7 +40,7 @@ const cardsData = [
 export const fetchSalesDashboardData = async (fromDate, toDate, salesPersonID) => {
   try {
     const response = await commonAPI.get(
-      `/api/Dashboard/GetSalesDashboard?FromDate=${fromDate}&ToDate=${toDate}&SalesPersonID=${salesPersonID}`
+      `/api/Dashboard/GetSalesDashboard?FromDate=${fromDate}&ToDate=${toDate}&SalesPersonID=${salesPersonID ? salesPersonID : -1}`
     );
 
     const mergedArray = cardsData.map((cardItem) => {

@@ -29,7 +29,7 @@ const Dashboard = () => {
   const [salesDashboardDataDates, setSalesDashboardDataDates] = useState({
     fromDate: getTodayDate(),
     toDate: getTodayDate(),
-    salesPersonId: -1
+    salesPersonId: null
   });
 
   const [salesDashboardData, setSalesDashboardData] = useState([]);
