@@ -28,6 +28,7 @@ function CustomerList() {
 
   const [selectedColumns, setSelectedColumns] = useState(() => columns.map((column) => ({ ...column, visible: true }))); // Initialize with all columns visible
   const [salesTrackData, setSalesTrackData] = useState([]);
+  const [selected, setSelected] = React.useState([]);
 
   const [salesDashboardDataDates, setSalesDashboardDataDates] = useState({
     fromDate: getTodayDate(),
@@ -70,10 +71,12 @@ function CustomerList() {
           salesDashboardDataDates={salesDashboardDataDates}
           setSalesDashboardDataDates={setSalesDashboardDataDates}
           handleFilterOptionsChange={handleFilterOptionsChange}
+          selected={selected}
+          setSelected={setSelected}
         />
       </Box>
 
-      <DummyDataTable selectedColumns={selectedColumns} salesTrackData={salesTrackData} />
+      <DummyDataTable selectedColumns={selectedColumns} salesTrackData={salesTrackData} selected={selected} setSelected={setSelected} />
     </Box>
   );
 }

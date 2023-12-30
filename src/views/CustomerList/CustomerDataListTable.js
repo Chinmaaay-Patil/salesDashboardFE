@@ -17,10 +17,10 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import renderCustomerTableDataListTableBody from 'utils/renderCustomerTableDataListTableBody';
 
-export default function EnhancedTable({ selectedColumns, salesTrackData }) {
+export default function EnhancedTable({ selectedColumns, salesTrackData, selected, setSelected }) {
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('LabName');
-  const [selected, setSelected] = React.useState([]);
+
   const [page, setPage] = React.useState(0);
 
   //   const [columns, setColumns] = React.useState([
@@ -123,11 +123,12 @@ export default function EnhancedTable({ selectedColumns, salesTrackData }) {
   };
 
   const handleClick = (event, id) => {
-    const isSelected = selected === id;
-    const newSelected = isSelected ? null : id;
-    setSelected([newSelected]);
+    event.stopPropagation(); // prevent event bubbling if needed
 
-    console.log('iddddd', id);
+    const isSelected = selected.includes(id);
+    const newSelected = isSelected ? selected.filter((selectedId) => selectedId !== id) : [...selected, id];
+
+    setSelected(newSelected);
   };
 
   const handleChangePage = (event, newPage) => {

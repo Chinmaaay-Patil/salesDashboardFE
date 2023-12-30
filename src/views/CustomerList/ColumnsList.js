@@ -11,6 +11,7 @@ import DisplaySettingsIcon from '@mui/icons-material/DisplaySettings';
 import DateComponent from 'ui-component/DatePicker';
 import { gridSpacing } from 'store/constant';
 import { getTodayDate } from 'utils/getTodaysDate';
+import { modifyAndDownloadDocument } from 'utils/apiCalls/modifyAndDownloadDocument';
 const grid = 8;
 
 const getItemStyle = (isDragging, draggableStyle) => ({
@@ -69,7 +70,9 @@ const CustomerList = ({
   setSelectedColumns,
   salesDashboardDataDates,
   setSalesDashboardDataDates,
-  handleFilterOptionsChange
+  handleFilterOptionsChange,
+  selected,
+  setSelected
 }) => {
   const [customers, setCustomers] = useState([]);
 
@@ -107,6 +110,11 @@ const CustomerList = ({
     setAnchorEl(null);
   };
 
+  function handleDownloadDocument() {
+    modifyAndDownloadDocument(selected[0]).then(() => {
+      setSelected([]);
+    });
+  }
   return (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '10px' }}>
       <Grid container spacing={gridSpacing}>
@@ -149,6 +157,8 @@ const CustomerList = ({
             variant="outlined"
             disableElevation
             size="large"
+            disabled={selected.length === 0}
+            onClick={handleDownloadDocument}
           >
             <ArrowCircleDownIcon />
           </IconButton>
