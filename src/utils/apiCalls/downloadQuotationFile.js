@@ -11,7 +11,7 @@ export const handleDownloadClick = async () => {
 
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'quotation.docx'; // Set the correct file extension here
+    a.download = 'quotation.docx';
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);

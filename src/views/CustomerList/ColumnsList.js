@@ -111,9 +111,11 @@ const CustomerList = ({
 
   function handleDownloadDocument() {
     modifyAndDownloadDocument(selected[0]).then(() => {
-      handleDownloadClick().then(() => {
-        setSelected([]);
-      });
+      setTimeout(() => {
+        handleDownloadClick().then(() => {
+          setSelected([]);
+        });
+      }, 5000);
     });
   }
   return (
