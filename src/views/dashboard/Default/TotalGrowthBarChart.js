@@ -153,7 +153,7 @@ const TotalGrowthBarChart = ({ isLoading, stackedBarChartData, setStackedBarChar
         <SkeletonTotalGrowthBarChart />
       ) : (
         <MainCard>
-          <Grid container spacing={gridSpacing} sx={{ minHeight: '56vh' }}>
+          <Grid container spacing={gridSpacing} sx={{ height: '56vh' }}>
             <Grid item xs={12}>
               <Grid container alignItems="center" justifyContent="space-between">
                 <Grid item>
