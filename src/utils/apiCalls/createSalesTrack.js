@@ -22,9 +22,7 @@ const createSalesTrack = async (salesTrackData) => {
     requirement: salesTrackData.detailRequirement,
     comment: salesTrackData.comment,
     followupdate: `${salesTrackData.followupDate}T${new Date().toLocaleTimeString('en-US', { hour12: false })}`,
-    attachments: salesTrackData.attachment,
-
-    sourcePersonOptions: salesTrackData.sourcePersonName
+    attachments: salesTrackData.attachment
   };
 
   try {
