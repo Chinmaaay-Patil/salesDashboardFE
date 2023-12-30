@@ -40,7 +40,7 @@ const Dashboard = () => {
     const fetDashboardData = await fetchSalesDashboardData(
       salesDashboardDataDates.fromDate,
       salesDashboardDataDates.toDate,
-      salesDashboardDataDates.salesPersonId
+      salesDashboardDataDates.salesPersonId?.sid
     );
 
     setDonoutChartData(fetDashboardData.DonoutChartData);
@@ -56,13 +56,25 @@ const Dashboard = () => {
     const fetDashboardData = await fetchSalesDashboardData(
       salesDashboardDataDates.fromDate,
       salesDashboardDataDates.toDate,
-      salesDashboardDataDates.salesPersonId
+      salesDashboardDataDates.salesPersonId?.sid
     );
 
     setDonoutChartData(fetDashboardData.DonoutChartData);
     setStackedBarChartData(fetDashboardData.StackedBarChartData);
     setSalesDashboardData(fetDashboardData.SalesDashboardData);
   }
+
+  const [selectedSalesPerson, setSelectedSalesPerson] = useState(null);
+
+  const handleChange = (event, newValue) => {
+    setSelectedSalesPerson(newValue);
+    setSalesDashboardDataDates({ ...salesDashboardDataDates, salesPersonId: newValue });
+  };
+
+  const handleReset = () => {
+    setSelectedSalesPerson(null);
+  };
+  console.log('salesDashboardDataDates', salesDashboardDataDates);
   return (
     <Grid container spacing={gridSpacing}>
       <Grid item xs={12}>
@@ -83,7 +95,7 @@ const Dashboard = () => {
             />
           </Grid>{' '}
           <Grid item lg={3} md={6} sm={6} xs={12}>
-            <Autocomplete
+            {/* <Autocomplete
               onChange={(event, newValue) => {
                 setSalesDashboardDataDates({ ...salesDashboardDataDates, salesPersonId: newValue.sid });
               }}
@@ -91,9 +103,19 @@ const Dashboard = () => {
               id="combo-box-demo"
               size="small"
               sx={{ width: '100%' }}
-              options={SalesPerson}
+              options={SalesPerson.map((option) => option.salesPersonName)}
               getOptionLabel={(option) => option.salesPersonName}
               renderInput={(params) => <TextField {...params} label="Sales Person" />}
+            /> */}
+
+            <Autocomplete
+              sx={{ width: '100%' }}
+              size="small"
+              value={selectedSalesPerson}
+              onChange={handleChange}
+              options={SalesPerson}
+              getOptionLabel={(option) => option.salesPersonName}
+              renderInput={(params) => <TextField {...params} label="Sales Person" variant="outlined" />}
             />
           </Grid>
           <Grid item lg={3} md={6} sm={6} xs={12}>
