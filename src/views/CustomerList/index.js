@@ -5,6 +5,7 @@ import ColumnsList from './ColumnsList';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { getSalesTrack } from 'utils/apiCalls/getSalesTrack';
+import { getTodayDate } from 'utils/getTodaysDate';
 
 function CustomerList() {
   const columns = [
@@ -27,9 +28,20 @@ function CustomerList() {
 
   const [selectedColumns, setSelectedColumns] = useState(() => columns.map((column) => ({ ...column, visible: true }))); // Initialize with all columns visible
   const [salesTrackData, setSalesTrackData] = useState([]);
-  async function fetchCustomerList() {
-    const temp = await getSalesTrack();
 
+  const [salesDashboardDataDates, setSalesDashboardDataDates] = useState({
+    fromDate: getTodayDate(),
+    toDate: getTodayDate()
+  });
+
+  async function fetchCustomerList() {
+    const temp = await getSalesTrack(salesDashboardDataDates);
+
+    setSalesTrackData(temp);
+  }
+
+  async function handleFilterOptionsChange() {
+    const temp = await getSalesTrack(salesDashboardDataDates);
     setSalesTrackData(temp);
   }
 
@@ -38,7 +50,7 @@ function CustomerList() {
   }, []);
 
   const isMobile = useMediaQuery('(max-width: 600px)');
-  const isTablet = useMediaQuery('(max-width: 960px)');
+
   return (
     <Box>
       <Box
@@ -46,12 +58,19 @@ function CustomerList() {
           display: 'flex',
           justifyContent: 'space-between',
           mb: 2,
-          flexDirection: isMobile ? 'column' : 'row',
+          flexDirection: 'column',
           alignItems: isMobile ? 'center' : 'left'
         }}
       >
         <Typography variant="h3">Customer List</Typography>
-        <ColumnsList selectedColumns={selectedColumns} setSelectedColumns={setSelectedColumns} columns={columns} />
+        <ColumnsList
+          selectedColumns={selectedColumns}
+          setSelectedColumns={setSelectedColumns}
+          columns={columns}
+          salesDashboardDataDates={salesDashboardDataDates}
+          setSalesDashboardDataDates={setSalesDashboardDataDates}
+          handleFilterOptionsChange={handleFilterOptionsChange}
+        />
       </Box>
 
       <DummyDataTable selectedColumns={selectedColumns} salesTrackData={salesTrackData} />

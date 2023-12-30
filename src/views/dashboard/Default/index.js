@@ -50,7 +50,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     fetchdataDashboard();
-  }, []); // Empty dependency
+  }, []);
 
   async function handleFilterOptionsChange() {
     const fetDashboardData = await fetchSalesDashboardData(

@@ -4,9 +4,11 @@ import { getSalesPersonList } from './getSalesPersonList';
 import { getStateList } from './getStateList';
 import { getVersionList } from './getVersionList';
 
-export const getSalesTrack = async () => {
+export const getSalesTrack = async (salesDashboardDataDates) => {
   try {
-    const response = await commonAPI.get(`/api/Dashboard/SalesList`);
+    const response = await commonAPI.get(
+      `/api/Dashboard/SalesList?FromDate=${salesDashboardDataDates.fromDate}&ToDate=${salesDashboardDataDates.toDate}`
+    );
 
     let SalesList = response.data;
 

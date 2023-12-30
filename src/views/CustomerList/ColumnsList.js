@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Checkbox, FormControlLabel, IconButton, MenuItem, Tooltip } from '@mui/material';
+import { Autocomplete, Button, Checkbox, FormControlLabel, Grid, IconButton, MenuItem, TextField, Tooltip } from '@mui/material';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { useEffect } from 'react';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -8,6 +8,9 @@ import Menu from '@mui/material/Menu';
 import { Box } from '@mui/system';
 import ArrowCircleDownIcon from '@mui/icons-material/ArrowCircleDown';
 import DisplaySettingsIcon from '@mui/icons-material/DisplaySettings';
+import DateComponent from 'ui-component/DatePicker';
+import { gridSpacing } from 'store/constant';
+import { getTodayDate } from 'utils/getTodaysDate';
 const grid = 8;
 
 const getItemStyle = (isDragging, draggableStyle) => ({
@@ -61,7 +64,13 @@ const StyledMenu = styled((props) => (
   }
 }));
 
-const CustomerList = ({ selectedColumns, setSelectedColumns }) => {
+const CustomerList = ({
+  selectedColumns,
+  setSelectedColumns,
+  salesDashboardDataDates,
+  setSalesDashboardDataDates,
+  handleFilterOptionsChange
+}) => {
   const [customers, setCustomers] = useState([]);
 
   useEffect(() => {
@@ -97,9 +106,38 @@ const CustomerList = ({ selectedColumns, setSelectedColumns }) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
   return (
-    <div>
-      <Box sx={{ display: 'flex', gap: 2 }}>
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '10px' }}>
+      <Grid container spacing={gridSpacing}>
+        <Grid item lg={3} md={6} sm={6} xs={12}>
+          <DateComponent
+            label="From Date"
+            value={salesDashboardDataDates.fromDate}
+            onChange={(e) => setSalesDashboardDataDates({ ...salesDashboardDataDates, fromDate: e.target.value })}
+          />
+        </Grid>{' '}
+        <Grid item lg={3} md={6} sm={6} xs={12}>
+          <DateComponent
+            label="To Date"
+            value={salesDashboardDataDates.toDate}
+            onChange={(e) => setSalesDashboardDataDates({ ...salesDashboardDataDates, toDate: e.target.value })}
+          />
+        </Grid>{' '}
+        <Grid item lg={3} md={6} sm={6} xs={12}>
+          <Button
+            variant="outlined"
+            sx={{
+              width: '100%',
+              borderRadius: 3
+            }}
+            onClick={handleFilterOptionsChange}
+          >
+            Filter
+          </Button>
+        </Grid>
+      </Grid>
+      <Box sx={{ display: 'flex', gap: 2, ml: 30 }}>
         {' '}
         <Tooltip title="Download Quotation">
           <IconButton
@@ -110,7 +148,6 @@ const CustomerList = ({ selectedColumns, setSelectedColumns }) => {
             aria-expanded={open ? 'true' : undefined}
             variant="outlined"
             disableElevation
-            onClick={handleClick}
             size="large"
           >
             <ArrowCircleDownIcon />
