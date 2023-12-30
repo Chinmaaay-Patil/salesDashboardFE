@@ -71,7 +71,8 @@ const CustomerList = ({
   setSalesDashboardDataDates,
   handleFilterOptionsChange,
   selected,
-  setSelected
+  setSelected,
+  salesTrackData
 }) => {
   const [customers, setCustomers] = useState([]);
 
@@ -111,7 +112,8 @@ const CustomerList = ({
 
   function handleDownloadDocument() {
     handleOpenBackDrop();
-    modifyAndDownloadDocument(selected[0]).then(() => {
+
+    modifyAndDownloadDocument(salesTrackData.find((lab) => lab.id === selected[0])).then(() => {
       setTimeout(() => {
         handleDownloadClick().then(() => {
           setSelected([]);
@@ -128,6 +130,8 @@ const CustomerList = ({
   const handleOpenBackDrop = () => {
     setOpenBackDrop(true);
   };
+
+  console.log('selected.length ', salesTrackData);
 
   return (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '10px' }}>
@@ -174,7 +178,7 @@ const CustomerList = ({
             variant="outlined"
             disableElevation
             size="large"
-            disabled={selected.length === 0}
+            disabled={selected.length !== 1}
             onClick={handleDownloadDocument}
           >
             <ArrowCircleDownIcon />

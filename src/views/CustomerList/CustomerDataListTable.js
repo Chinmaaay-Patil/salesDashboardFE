@@ -64,7 +64,7 @@ export default function EnhancedTable({ selectedColumns, salesTrackData, selecte
       <TableHead>
         <TableRow>
           <TableCell padding="checkbox">
-            {/* <Checkbox
+            <Checkbox
               color="primary"
               indeterminate={numSelected > 0 && numSelected < rowCount}
               checked={rowCount > 0 && numSelected === rowCount}
@@ -72,7 +72,7 @@ export default function EnhancedTable({ selectedColumns, salesTrackData, selecte
               inputProps={{
                 'aria-label': 'select all labs'
               }}
-            /> */}
+            />
           </TableCell>
           {selectedColumns.map(
             (column) =>
@@ -123,11 +123,18 @@ export default function EnhancedTable({ selectedColumns, salesTrackData, selecte
   };
 
   const handleClick = (event, id) => {
-    event.stopPropagation(); // prevent event bubbling if needed
+    const selectedIndex = selected.indexOf(id);
+    let newSelected = [];
 
-    const isSelected = selected.includes(id);
-    const newSelected = isSelected ? selected.filter((selectedId) => selectedId !== id) : [...selected, id];
-
+    if (selectedIndex === -1) {
+      newSelected = newSelected.concat(selected, id);
+    } else if (selectedIndex === 0) {
+      newSelected = newSelected.concat(selected.slice(1));
+    } else if (selectedIndex === selected.length - 1) {
+      newSelected = newSelected.concat(selected.slice(0, -1));
+    } else if (selectedIndex > 0) {
+      newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
+    }
     setSelected(newSelected);
   };
 
@@ -139,10 +146,7 @@ export default function EnhancedTable({ selectedColumns, salesTrackData, selecte
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-
-  const isSelected = (id) => {
-    return selected[0]?.id === id;
-  };
+  const isSelected = (id) => selected.indexOf(id) !== -1;
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
   function stableSort(array, comparator) {
@@ -207,7 +211,7 @@ export default function EnhancedTable({ selectedColumns, salesTrackData, selecte
                 return (
                   <TableRow
                     hover
-                    onClick={(event) => handleClick(event, row)}
+                    onClick={(event) => handleClick(event, row.id)}
                     role="checkbox"
                     aria-checked={isItemSelected}
                     tabIndex={-1}

@@ -34,7 +34,7 @@ function CustomerList() {
     fromDate: getTodayDate(),
     toDate: getTodayDate()
   });
-
+  console.log('selected', selected);
   async function fetchCustomerList() {
     const temp = await getSalesTrack(salesDashboardDataDates);
 
@@ -73,6 +73,7 @@ function CustomerList() {
           handleFilterOptionsChange={handleFilterOptionsChange}
           selected={selected}
           setSelected={setSelected}
+          salesTrackData={salesTrackData}
         />
       </Box>
 
