@@ -107,9 +107,9 @@ const TotalGrowthBarChart = ({ isLoading, stackedBarChartData, setStackedBarChar
   }, [navType, primary200, primaryDark, secondaryMain, secondaryLight, primary, darkLight, grey200, isLoading, grey500]);
 
   useEffect(() => {
-    const countArray = stackedBarChartData.map((item) => item.count);
-    const projectedAmountArray = stackedBarChartData.map((item) => item.projectedAmount);
-    const salesPersonNameArray = stackedBarChartData.map((item) => item.salesPersonName);
+    const countArray = stackedBarChartData.map((item) => (item.count ? item.count : 0));
+    const projectedAmountArray = stackedBarChartData.map((item) => (item.projectedAmount ? item.projectedAmount : 0));
+    const salesPersonNameArray = stackedBarChartData.map((item) => (item.salesPersonName ? item.salesPersonName : 'Unknown'));
 
     const newChartData = {
       ...chartData.options,
