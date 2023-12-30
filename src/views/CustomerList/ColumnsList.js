@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { Autocomplete, Button, Checkbox, FormControlLabel, Grid, IconButton, MenuItem, TextField, Tooltip } from '@mui/material';
+import { Button, Checkbox, FormControlLabel, Grid, IconButton, MenuItem, Tooltip } from '@mui/material';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { useEffect } from 'react';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { styled, alpha } from '@mui/material/styles';
 import Menu from '@mui/material/Menu';
 import { Box } from '@mui/system';
@@ -10,8 +9,8 @@ import ArrowCircleDownIcon from '@mui/icons-material/ArrowCircleDown';
 import DisplaySettingsIcon from '@mui/icons-material/DisplaySettings';
 import DateComponent from 'ui-component/DatePicker';
 import { gridSpacing } from 'store/constant';
-import { getTodayDate } from 'utils/getTodaysDate';
 import { modifyAndDownloadDocument } from 'utils/apiCalls/modifyAndDownloadDocument';
+import { handleDownloadClick } from 'utils/apiCalls/downloadQuotationFile';
 const grid = 8;
 
 const getItemStyle = (isDragging, draggableStyle) => ({
@@ -112,7 +111,9 @@ const CustomerList = ({
 
   function handleDownloadDocument() {
     modifyAndDownloadDocument(selected[0]).then(() => {
-      setSelected([]);
+      handleDownloadClick().then(() => {
+        setSelected([]);
+      });
     });
   }
   return (

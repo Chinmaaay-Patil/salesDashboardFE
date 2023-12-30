@@ -37,7 +37,7 @@ const chartData = {
     },
     xaxis: {
       type: 'category',
-      categories: ['Person 1', 'Person 2', 'Person 3']
+      categories: []
     },
     legend: {
       show: true,
@@ -71,11 +71,11 @@ const chartData = {
   series: [
     {
       name: 'Count',
-      data: [35, 125, 35]
+      data: []
     },
     {
       name: 'Amount',
-      data: [35, 15, 15]
+      data: []
     }
   ]
 };
