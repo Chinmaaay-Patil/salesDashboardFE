@@ -1,14 +1,16 @@
 import commonAPI from 'utils/axiosConfig';
 
 export const modifyAndDownloadDocument = async (customerDetails) => {
-  console.log('customerDetails', customerDetails);
   try {
-    const data = {
-      newCustomerName: customerDetails.labName,
-      newBillingAddress: customerDetails.address
-    };
-
-    const response = await commonAPI.post('/api/Dashboard/ModifyDocument', data);
+    const response = await commonAPI.post(
+      `https://salesapi.elabassist.com/api/Dashboard/ModifyDocument?newCustomerName=${customerDetails.labName}&newBillingAddress=${customerDetails.address}`,
+      {
+        versionId: 0,
+        labName: 'string',
+        address: 'string',
+        textFilePath: 'string'
+      }
+    );
     const salesPersonsData = response.data;
     return salesPersonsData;
   } catch (error) {

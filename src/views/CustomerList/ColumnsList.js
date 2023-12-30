@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Checkbox, FormControlLabel, Grid, IconButton, MenuItem, Tooltip } from '@mui/material';
+import { Backdrop, Button, Checkbox, CircularProgress, FormControlLabel, Grid, IconButton, MenuItem, Tooltip } from '@mui/material';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { useEffect } from 'react';
 import { styled, alpha } from '@mui/material/styles';
@@ -110,16 +110,30 @@ const CustomerList = ({
   };
 
   function handleDownloadDocument() {
+    handleOpenBackDrop();
     modifyAndDownloadDocument(selected[0]).then(() => {
       setTimeout(() => {
         handleDownloadClick().then(() => {
           setSelected([]);
+          handleCloseBackDrop();
         });
       }, 5000);
     });
   }
+
+  const [openBackDrop, setOpenBackDrop] = React.useState(false);
+  const handleCloseBackDrop = () => {
+    setOpenBackDrop(false);
+  };
+  const handleOpenBackDrop = () => {
+    setOpenBackDrop(true);
+  };
+
   return (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '10px' }}>
+      <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={openBackDrop} onClick={handleCloseBackDrop}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <Grid container spacing={gridSpacing}>
         <Grid item lg={3} md={6} sm={6} xs={12}>
           <DateComponent
