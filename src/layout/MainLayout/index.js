@@ -63,7 +63,7 @@ const MainLayout = () => {
   const handleLeftDrawerToggle = () => {
     dispatch({ type: SET_MENU, opened: !leftDrawerOpened });
   };
-  console.log('theme', theme);
+
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />

@@ -53,7 +53,7 @@ export default function EnhancedTable({ selectedColumns, salesTrackData }) {
   useEffect(() => {
     setRows(salesTrackData);
   }, [salesTrackData]);
-  console.log('salesTraxxxckDatasalesTrackData', salesTrackData);
+
   function EnhancedTableHead(props) {
     const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } = props;
     const createSortHandler = (property) => (event) => {
@@ -64,7 +64,7 @@ export default function EnhancedTable({ selectedColumns, salesTrackData }) {
       <TableHead>
         <TableRow>
           <TableCell padding="checkbox">
-            <Checkbox
+            {/* <Checkbox
               color="primary"
               indeterminate={numSelected > 0 && numSelected < rowCount}
               checked={rowCount > 0 && numSelected === rowCount}
@@ -72,7 +72,7 @@ export default function EnhancedTable({ selectedColumns, salesTrackData }) {
               inputProps={{
                 'aria-label': 'select all labs'
               }}
-            />
+            /> */}
           </TableCell>
           {selectedColumns.map(
             (column) =>
@@ -123,19 +123,11 @@ export default function EnhancedTable({ selectedColumns, salesTrackData }) {
   };
 
   const handleClick = (event, id) => {
-    const selectedIndex = selected.indexOf(id);
-    let newSelected = [];
+    const isSelected = selected === id;
+    const newSelected = isSelected ? null : id;
+    setSelected([newSelected]);
 
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, id);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
-    }
-    setSelected(newSelected);
+    console.log('iddddd', id);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -147,7 +139,9 @@ export default function EnhancedTable({ selectedColumns, salesTrackData }) {
     setPage(0);
   };
 
-  const isSelected = (id) => selected.indexOf(id) !== -1;
+  const isSelected = (id) => {
+    return selected[0]?.id === id;
+  };
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
   function stableSort(array, comparator) {
@@ -179,7 +173,7 @@ export default function EnhancedTable({ selectedColumns, salesTrackData }) {
 
   useEffect(() => {
     const temp = stableSort(rows, getComparator(order, orderBy)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
-    console.log('temppp.tme', temp);
+
     setVisibleRows(temp);
     // eslint-disable-next-line
   }, [order, orderBy, page, rowsPerPage, rows]);
@@ -212,7 +206,7 @@ export default function EnhancedTable({ selectedColumns, salesTrackData }) {
                 return (
                   <TableRow
                     hover
-                    onClick={(event) => handleClick(event, row.id)}
+                    onClick={(event) => handleClick(event, row)}
                     role="checkbox"
                     aria-checked={isItemSelected}
                     tabIndex={-1}

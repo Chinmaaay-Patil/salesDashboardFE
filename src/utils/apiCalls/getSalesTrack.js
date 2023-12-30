@@ -41,7 +41,7 @@ export const getSalesTrack = async (salesDashboardDataDates) => {
           versionId: matchingElementVersion ? { ...matchingElementVersion } : null
         };
       });
-      console.log('SalesList', SalesList);
+
       return SalesList;
     } catch (error) {
       console.error('Error fetching getSalesTrack:', error.message);
