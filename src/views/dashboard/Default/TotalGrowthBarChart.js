@@ -105,7 +105,19 @@ const TotalGrowthBarChart = ({ isLoading, stackedBarChartData, setStackedBarChar
     if (!isLoading) {
       ApexCharts.exec(`bar-chart`, 'updateOptions', newChartData);
     }
-  }, [navType, primary200, primaryDark, secondaryMain, secondaryLight, primary, darkLight, grey200, isLoading, grey500]);
+  }, [
+    navType,
+    primary200,
+    primaryDark,
+    secondaryMain,
+    secondaryLight,
+    primary,
+    darkLight,
+    grey200,
+    isLoading,
+    grey500,
+    stackedBarChartData
+  ]);
 
   useEffect(() => {
     const countArray = stackedBarChartData.map((item) => (item.count ? item.count : 0));
