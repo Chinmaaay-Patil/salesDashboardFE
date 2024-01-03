@@ -12,7 +12,7 @@ import TableSortLabel from '@mui/material/TableSortLabel';
 import Paper from '@mui/material/Paper';
 import Checkbox from '@mui/material/Checkbox';
 import { visuallyHidden } from '@mui/utils';
-import { Button } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import renderCustomerTableDataListTableBody from 'utils/renderCustomerTableDataListTableBody';
@@ -192,75 +192,82 @@ export default function EnhancedTable({ selectedColumns, salesTrackData, selecte
   const minHeightTable = '65vh';
   return (
     <Box sx={{ width: '100%', minHeight: minHeightTable }}>
-      <Paper sx={{ width: '100%', mb: 2 }}>
-        <TableContainer sx={{ height: minHeightTable }}>
-          <Table sx={{ minWidth: 750, minHeight: minHeightTable }} aria-labelledby="tableTitle">
-            <EnhancedTableHead
-              numSelected={selected.length}
-              order={order}
-              orderBy={orderBy}
-              onSelectAllClick={handleSelectAllClick}
-              onRequestSort={handleRequestSort}
-              rowCount={rows.length}
-            />
-            <TableBody>
-              {visibleRows.map((row, index) => {
-                const isItemSelected = isSelected(row.id);
-                const labelId = `enhanced-table-checkbox-${index}`;
+      {visibleRows.length !== 0 ? (
+        <Paper sx={{ width: '100%', mb: 2 }}>
+          <TableContainer sx={{ height: minHeightTable }}>
+            <Table sx={{ minWidth: 750, minHeight: minHeightTable }} aria-labelledby="tableTitle">
+              <EnhancedTableHead
+                numSelected={selected.length}
+                order={order}
+                orderBy={orderBy}
+                onSelectAllClick={handleSelectAllClick}
+                onRequestSort={handleRequestSort}
+                rowCount={rows.length}
+              />
+              <TableBody>
+                {visibleRows.map((row, index) => {
+                  const isItemSelected = isSelected(row.id);
+                  const labelId = `enhanced-table-checkbox-${index}`;
 
-                return (
+                  return (
+                    <TableRow
+                      hover
+                      onClick={(event) => handleClick(event, row.id)}
+                      role="checkbox"
+                      aria-checked={isItemSelected}
+                      tabIndex={-1}
+                      key={row.id}
+                      selected={isItemSelected}
+                      sx={{ cursor: 'pointer' }}
+                    >
+                      <TableCell padding="checkbox">
+                        <Checkbox
+                          color="primary"
+                          checked={isItemSelected}
+                          inputProps={{
+                            'aria-labelledby': labelId
+                          }}
+                        />
+                      </TableCell>
+                      {selectedColumns.map((column) => {
+                        return (
+                          column.visible && renderCustomerTableDataListTableBody(column, row)
+                          // <TableCell key={column.id} align="left" padding="normal">
+                          //   {row[column.id]}
+                          // </TableCell>ss
+                        );
+                      })}
+                    </TableRow>
+                  );
+                })}
+                {emptyRows > 0 && (
                   <TableRow
-                    hover
-                    onClick={(event) => handleClick(event, row.id)}
-                    role="checkbox"
-                    aria-checked={isItemSelected}
-                    tabIndex={-1}
-                    key={row.id}
-                    selected={isItemSelected}
-                    sx={{ cursor: 'pointer' }}
+                    style={{
+                      height: 53 * emptyRows
+                    }}
                   >
-                    <TableCell padding="checkbox">
-                      <Checkbox
-                        color="primary"
-                        checked={isItemSelected}
-                        inputProps={{
-                          'aria-labelledby': labelId
-                        }}
-                      />
-                    </TableCell>
-                    {selectedColumns.map((column) => {
-                      return (
-                        column.visible && renderCustomerTableDataListTableBody(column, row)
-                        // <TableCell key={column.id} align="left" padding="normal">
-                        //   {row[column.id]}
-                        // </TableCell>ss
-                      );
-                    })}
+                    <TableCell colSpan={selectedColumns.length + 1} />
                   </TableRow>
-                );
-              })}
-              {emptyRows > 0 && (
-                <TableRow
-                  style={{
-                    height: 53 * emptyRows
-                  }}
-                >
-                  <TableCell colSpan={selectedColumns.length + 1} />
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-      </Paper>
+                )}
+              </TableBody>
+              <Typography></Typography>
+            </Table>
+          </TableContainer>
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 25]}
+            component="div"
+            count={rows.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+        </Paper>
+      ) : (
+        <Paper sx={{ width: '100%', mb: 2, height: minHeightTable, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Typography variant="h4">No Data To Display. Please Select Different Filter Range</Typography>
+        </Paper>
+      )}
     </Box>
   );
 }
