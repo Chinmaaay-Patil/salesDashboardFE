@@ -131,7 +131,7 @@ const FirebaseLogin = ({ ...others }) => {
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           console.log('values', values);
-          if (values.email === 'test@test.com' && values.password === '123') {
+          if (values.email === 'admin@elabassist.com' && values.password === 'admin123') {
             sessionStorage.setItem('apikey', 'test@salesdashboard.com');
             navigate('/');
           } else {
