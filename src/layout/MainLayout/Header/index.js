@@ -2,14 +2,14 @@ import PropTypes from 'prop-types';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Avatar, Box, ButtonBase } from '@mui/material';
+import { Avatar, Box, ButtonBase, Typography } from '@mui/material';
 
 // project imports
 import LogoSection from '../LogoSection';
 import SearchSection from './SearchSection';
 import ProfileSection from './ProfileSection';
 import NotificationSection from './NotificationSection';
-
+import logoDark from 'assets/images/logo-dark.png';
 // assets
 import { IconMenu2 } from '@tabler/icons';
 
@@ -60,7 +60,10 @@ const Header = ({ handleLeftDrawerToggle }) => {
 
       {/* header search */}
       {/* <SearchSection /> */}
-      <Box sx={{ flexGrow: 1 }} />
+      <Box sx={{ flexGrow: 1, ml: 3 }}>
+        {' '}
+        <img src={logoDark} />
+      </Box>
       <Box sx={{ flexGrow: 1 }} />
 
       {/* notification & profile */}
