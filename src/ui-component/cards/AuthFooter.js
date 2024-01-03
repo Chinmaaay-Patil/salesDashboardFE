@@ -37,7 +37,7 @@ export default function Footer() {
     >
       <Typography sx={{ mr: 4 }} variant="h6">
         {' '}
-        &copy; sales dahboard
+        &copy; sales dahboard @ 2024 All Rights Reserved
       </Typography>
     </AppBar>
   );

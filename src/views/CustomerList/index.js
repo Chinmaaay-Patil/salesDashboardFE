@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import { getSalesTrack } from 'utils/apiCalls/getSalesTrack';
 import { getTodayDate } from 'utils/getTodaysDate';
+import { useNavigate } from 'react-router';
 
 function CustomerList() {
   const columns = [
@@ -29,7 +30,7 @@ function CustomerList() {
   const [selectedColumns, setSelectedColumns] = useState(() => columns.map((column) => ({ ...column, visible: true }))); // Initialize with all columns visible
   const [salesTrackData, setSalesTrackData] = useState([]);
   const [selected, setSelected] = React.useState([]);
-
+  const navigate = useNavigate();
   const [salesDashboardDataDates, setSalesDashboardDataDates] = useState({
     fromDate: getTodayDate(),
     toDate: getTodayDate()
@@ -47,7 +48,9 @@ function CustomerList() {
   }
 
   useEffect(() => {
-    fetchCustomerList();
+    if (!sessionStorage.getItem('apikey')) {
+      navigate('/signin');
+    } else fetchCustomerList();
   }, []);
 
   const isMobile = useMediaQuery('(max-width: 600px)');

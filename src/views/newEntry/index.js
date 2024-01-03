@@ -13,6 +13,7 @@ import { getVersionList } from 'utils/apiCalls/getVersionList';
 import { useEffect } from 'react';
 import * as Yup from 'yup';
 import createSalesTrack from 'utils/apiCalls/createSalesTrack';
+import { useNavigate } from 'react-router';
 const MyForm = () => {
   const validationSchema = Yup.object({
     labName: Yup.string().required('Lab Name is required'),
@@ -64,7 +65,7 @@ const MyForm = () => {
   const [versionOptions, setVersionOptions] = useState([]);
   const [salesPersonOptions, setSalesPersonOptions] = useState([]);
   const [stateOptions, setStateOptions] = useState([]);
-
+  const navigate = useNavigate();
   const handleReset = () => {
     formik.resetForm();
     formik.setFieldValue('date', new Date().toISOString().split('T')[0]);
@@ -98,7 +99,9 @@ const MyForm = () => {
   }
 
   useEffect(() => {
-    fetchDropDOwnData();
+    if (!sessionStorage.getItem('apikey')) {
+      navigate('/signin');
+    } else fetchDropDOwnData();
   }, []);
 
   return (
