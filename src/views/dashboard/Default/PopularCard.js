@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Grid, MenuItem, TextField, Typography } from '@mui/material';
+import { Box, Grid, MenuItem, TextField, Typography } from '@mui/material';
 
 // third-party
 import ApexCharts from 'apexcharts';
@@ -20,6 +20,7 @@ import chartData from './chart-data/total-growth-bar-chart';
 import DonutChartsCustom from '../Donout';
 import { calculateDateRange } from 'utils/calculateDateRangeFilterDates';
 import { fetchSalesDashboardData } from 'utils/fetchSalesDashboardData';
+import NoDataDisplay from 'utils/NoDataDisplay';
 
 const status = [
   {
@@ -136,7 +137,11 @@ const TotalGrowthBarChart = ({ isLoading, donoutChartData, setDonoutChartData })
               </Grid>
             </Grid>
             <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center', pointerEvents: 'none' }}>
-              <DonutChartsCustom donoutChartData={donoutChartData} />
+              {donoutChartData.count === 0 || donoutChartData.projectedAmount === null ? (
+                <NoDataDisplay />
+              ) : (
+                <DonutChartsCustom donoutChartData={donoutChartData} />
+              )}
             </Grid>
           </Grid>
         </MainCard>

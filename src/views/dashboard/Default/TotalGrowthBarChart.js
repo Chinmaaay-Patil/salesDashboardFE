@@ -19,6 +19,7 @@ import { gridSpacing } from 'store/constant';
 import chartData from './chart-data/total-growth-bar-chart';
 import { calculateDateRange } from 'utils/calculateDateRangeFilterDates';
 import { fetchSalesDashboardData } from 'utils/fetchSalesDashboardData';
+import NoDataDisplay from 'utils/NoDataDisplay';
 
 const status = [
   {
@@ -61,7 +62,7 @@ const TotalGrowthBarChart = ({ isLoading, stackedBarChartData, setStackedBarChar
     const newChartData = {
       ...chartData.options,
 
-      colors: [primary200, primaryDark],
+      colors: ['#F26462', '#F5915A'],
       xaxis: {
         labels: {
           style: {
@@ -175,7 +176,12 @@ const TotalGrowthBarChart = ({ isLoading, stackedBarChartData, setStackedBarChar
               </Grid>
             </Grid>
             <Grid item xs={12}>
-              <Chart {...chartData} />
+              {stackedBarChartData.length === 0 ? <NoDataDisplay /> : <Chart {...chartData} />}{' '}
+              {stackedBarChartData.length !== 0 && (
+                <Typography fontStyle="italic" sx={{ textAlign: 'right', fontSize: '10px' }}>
+                  **Click on the count or amount to see individual values
+                </Typography>
+              )}{' '}
             </Grid>
           </Grid>
         </MainCard>
