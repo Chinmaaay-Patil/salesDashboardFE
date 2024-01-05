@@ -3,12 +3,30 @@ import React from 'react';
 import AddSourcePersonForm from './AddSourcePersonForm';
 import useSourcePerson from './useSourcePerson';
 import DisplaySalesPersonList from './DisplaySourcePersonList';
+import { getSourcePerson } from 'utils/apiCalls/getSourcePersonList';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router';
+import { useState } from 'react';
+import { getSourceLeads } from 'utils/apiCalls/getSourceLeadsList';
 
 function SourcePerson() {
+  const navigate = useNavigate();
   const { handleSubmitAddSourcePersonForm } = useSourcePerson();
+  const [sourceOfLeadOptions, setSourceOfLeadOptions] = useState([]);
+
+  async function fetchDropDOwnData() {
+    const getSourceLeadsListData = await getSourceLeads();
+    setSourceOfLeadOptions(getSourceLeadsListData);
+    console.log('getSourcePersonListData', getSourceLeadsListData);
+  }
+  useEffect(() => {
+    if (!sessionStorage.getItem('apikey')) {
+      navigate('/signin');
+    } else fetchDropDOwnData();
+  }, []);
   return (
     <Box>
-      <AddSourcePersonForm handleSubmitAddSourcePersonForm={handleSubmitAddSourcePersonForm} />
+      <AddSourcePersonForm handleSubmitAddSourcePersonForm={handleSubmitAddSourcePersonForm} sourceOfLeadOptions={sourceOfLeadOptions} />
       <DisplaySalesPersonList />
     </Box>
   );

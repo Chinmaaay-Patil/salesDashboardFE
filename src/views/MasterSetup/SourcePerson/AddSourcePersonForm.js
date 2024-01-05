@@ -4,10 +4,10 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { Grid, Typography } from '@mui/material';
+import { FormControl, FormHelperText, Grid, InputLabel, MenuItem, Select, Typography } from '@mui/material';
 import { gridSpacing } from 'store/constant';
 
-const AddSourcePersonForm = ({ handleSubmitAddSourcePersonForm }) => {
+const AddSourcePersonForm = ({ handleSubmitAddSourcePersonForm, sourceOfLeadOptions }) => {
   const formik = useFormik({
     initialValues: {
       sourcePersonName: '',
@@ -19,7 +19,8 @@ const AddSourcePersonForm = ({ handleSubmitAddSourcePersonForm }) => {
       sourcePersonName: Yup.string().required('Name is required'),
       companyName: Yup.string().required('Company Name is required'),
       mobile: Yup.string().required('Mobile is required'),
-      email: Yup.string().email('Invalid email address').required('Email is required')
+      email: Yup.string().email('Invalid email address').required('Email is required'),
+      sourceOfLead: Yup.object().required('Source of Lead is required')
     }),
     onSubmit: (values) => {
       handleSubmitAddSourcePersonForm(values);
@@ -88,6 +89,19 @@ const AddSourcePersonForm = ({ handleSubmitAddSourcePersonForm }) => {
             helperText={formik.touched.email && formik.errors.email}
           />
         </Grid>
+        {/* <Grid item lg={2} md={3} sm={6} xs={12}>
+          <FormControl fullWidth error={formik.touched.sourceOfLead && Boolean(formik.errors.sourceOfLead)}>
+            <InputLabel>Source of Lead</InputLabel>
+            <Select label="Source of Lead" name="sourceOfLead" value={formik.values.sourceOfLead} onChange={formik.handleChange}>
+              {sourceOfLeadOptions.map((option) => (
+                <MenuItem key={option.sid} value={option}>
+                  {option.sourceName}
+                </MenuItem>
+              ))}
+            </Select>
+            {formik.touched.sourceOfLead && formik.errors.sourceOfLead && <FormHelperText>{formik.errors.sourceOfLead}</FormHelperText>}
+          </FormControl>
+        </Grid> */}
         <Grid item lg={2} md={3} sm={6} xs={12}>
           <Button type="submit" variant="contained" color="secondary" sx={{ width: '100%', mt: 0.5 }}>
             Submit
