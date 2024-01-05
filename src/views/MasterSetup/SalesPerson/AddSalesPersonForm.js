@@ -4,7 +4,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { Grid } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 import { gridSpacing } from 'store/constant';
 
 const AddSalesPersonForm = ({ handleSubmitAddSalesPersonForm }) => {
@@ -28,7 +28,10 @@ const AddSalesPersonForm = ({ handleSubmitAddSalesPersonForm }) => {
 
   return (
     <form onSubmit={formik.handleSubmit} onReset={formik.handleReset}>
-      <Grid container spacing={gridSpacing}>
+      <Typography sx={{ flex: '1 1 100%' }} variant="h2" id="tableTitle" component="div">
+        Add Sales Person
+      </Typography>
+      <Grid container spacing={gridSpacing} sx={{ mt: 1 }}>
         <Grid item lg={2} md={3} sm={6} xs={12}>
           <TextField
             id="salesPersonName"
