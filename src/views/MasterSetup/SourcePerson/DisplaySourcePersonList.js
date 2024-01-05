@@ -178,7 +178,7 @@ EnhancedTableToolbar.propTypes = {
 
 export default function EnhancedTable({ tableDataForSourcePerson }) {
   const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState('companyName');
+  const [orderBy, setOrderBy] = React.useState('sourcePersonName');
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
@@ -205,6 +205,7 @@ export default function EnhancedTable({ tableDataForSourcePerson }) {
   };
 
   const handleClick = (event, id) => {
+    console.log('id', id);
     const selectedIndex = selected.indexOf(id);
     let newSelected = [];
 
@@ -268,17 +269,18 @@ export default function EnhancedTable({ tableDataForSourcePerson }) {
             />
             <TableBody>
               {visibleRows.map((row, index) => {
-                const isItemSelected = isSelected(row.id);
+                console.log('row', row);
+                const isItemSelected = isSelected(row.spid);
                 const labelId = `enhanced-table-checkbox-${index}`;
 
                 return (
                   <TableRow
                     hover
-                    onClick={(event) => handleClick(event, row.id)}
+                    onClick={(event) => handleClick(event, row.spid)}
                     role="checkbox"
                     aria-checked={isItemSelected}
                     tabIndex={-1}
-                    key={row.id}
+                    key={row.spid}
                     selected={isItemSelected}
                     sx={{ cursor: 'pointer' }}
                   >
