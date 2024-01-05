@@ -13,21 +13,32 @@ function SourcePerson() {
   const navigate = useNavigate();
   const { handleSubmitAddSourcePersonForm } = useSourcePerson();
   const [sourceOfLeadOptions, setSourceOfLeadOptions] = useState([]);
+  const [tableDataForSourcePerson, setTableDataForSourcePerson] = useState([]);
 
   async function fetchDropDOwnData() {
     const getSourceLeadsListData = await getSourceLeads();
     setSourceOfLeadOptions(getSourceLeadsListData);
     console.log('getSourcePersonListData', getSourceLeadsListData);
   }
+
   useEffect(() => {
     if (!sessionStorage.getItem('apikey')) {
       navigate('/signin');
-    } else fetchDropDOwnData();
+    } else {
+      fetchDropDOwnData();
+      getTableData();
+    }
   }, []);
+  async function getTableData() {
+    const tableData = await getSourcePerson();
+    setTableDataForSourcePerson(tableData);
+    console.log('tableData', tableData);
+  }
+
   return (
     <Box>
       <AddSourcePersonForm handleSubmitAddSourcePersonForm={handleSubmitAddSourcePersonForm} sourceOfLeadOptions={sourceOfLeadOptions} />
-      <DisplaySalesPersonList />
+      <DisplaySalesPersonList tableDataForSourcePerson={tableDataForSourcePerson} />
     </Box>
   );
 }

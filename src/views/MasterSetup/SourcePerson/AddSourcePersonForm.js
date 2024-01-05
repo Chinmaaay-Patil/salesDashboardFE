@@ -19,10 +19,11 @@ const AddSourcePersonForm = ({ handleSubmitAddSourcePersonForm, sourceOfLeadOpti
       sourcePersonName: Yup.string().required('Name is required'),
       companyName: Yup.string().required('Company Name is required'),
       mobile: Yup.string().required('Mobile is required'),
-      email: Yup.string().email('Invalid email address').required('Email is required'),
-      sourceOfLead: Yup.object().required('Source of Lead is required')
+      email: Yup.string().email('Invalid email address').required('Email is required')
+      // sourceOfLead: Yup.object().required('Source of Lead is required')
     }),
     onSubmit: (values) => {
+      console.log('first', values);
       handleSubmitAddSourcePersonForm(values);
     }
   });
