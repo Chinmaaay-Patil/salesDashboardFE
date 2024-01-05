@@ -7,7 +7,7 @@ import Button from '@mui/material/Button';
 import { FormControl, FormHelperText, Grid, InputLabel, MenuItem, Select, Typography } from '@mui/material';
 import { gridSpacing } from 'store/constant';
 
-const AddSourcePersonForm = ({ handleSubmitAddSourcePersonForm, sourceOfLeadOptions }) => {
+const AddSourcePersonForm = ({ handleSubmitAddSourcePersonForm, sourceOfLeadOptions, getTableData }) => {
   const formik = useFormik({
     initialValues: {
       sourcePersonName: '',
@@ -22,9 +22,14 @@ const AddSourcePersonForm = ({ handleSubmitAddSourcePersonForm, sourceOfLeadOpti
       email: Yup.string().email('Invalid email address').required('Email is required')
       // sourceOfLead: Yup.object().required('Source of Lead is required')
     }),
-    onSubmit: (values) => {
-      console.log('first', values);
-      handleSubmitAddSourcePersonForm(values);
+    onSubmit: async (values) => {
+      const response = await handleSubmitAddSourcePersonForm(values);
+
+      if (response.spid) {
+        getTableData();
+        formik.handleReset();
+      }
+      console.log('responseresponse', response);
     }
   });
 

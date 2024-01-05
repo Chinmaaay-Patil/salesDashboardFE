@@ -37,7 +37,11 @@ function SourcePerson() {
 
   return (
     <Box>
-      <AddSourcePersonForm handleSubmitAddSourcePersonForm={handleSubmitAddSourcePersonForm} sourceOfLeadOptions={sourceOfLeadOptions} />
+      <AddSourcePersonForm
+        handleSubmitAddSourcePersonForm={handleSubmitAddSourcePersonForm}
+        sourceOfLeadOptions={sourceOfLeadOptions}
+        getTableData={getTableData}
+      />
       <DisplaySalesPersonList tableDataForSourcePerson={tableDataForSourcePerson} />
     </Box>
   );
