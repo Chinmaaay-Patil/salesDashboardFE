@@ -7,57 +7,57 @@ import Button from '@mui/material/Button';
 import { Grid, Typography } from '@mui/material';
 import { gridSpacing } from 'store/constant';
 
-const AddSalesPersonForm = ({ handleSubmitAddSalesPersonForm }) => {
+const AddSourcePersonForm = ({ handleSubmitAddSourcePersonForm }) => {
   const formik = useFormik({
     initialValues: {
-      salesPersonName: '',
-      designation: '',
+      sourcePersonName: '',
+      companyName: '',
       mobile: '',
       email: ''
     },
     validationSchema: Yup.object({
-      salesPersonName: Yup.string().required('Name is required'),
-      designation: Yup.string().required('Designation is required'),
+      sourcePersonName: Yup.string().required('Name is required'),
+      companyName: Yup.string().required('Company Name is required'),
       mobile: Yup.string().required('Mobile is required'),
       email: Yup.string().email('Invalid email address').required('Email is required')
     }),
     onSubmit: (values) => {
-      handleSubmitAddSalesPersonForm(values);
+      handleSubmitAddSourcePersonForm(values);
     }
   });
 
   return (
     <form onSubmit={formik.handleSubmit} onReset={formik.handleReset}>
       <Typography sx={{ flex: '1 1 100%' }} variant="h2" id="tableTitle" component="div">
-        Add Sales Person
+        Add Source Person
       </Typography>
       <Grid container spacing={gridSpacing} sx={{ mt: 1 }}>
         <Grid item lg={2} md={3} sm={6} xs={12}>
           <TextField
-            id="salesPersonName"
-            name="salesPersonName"
-            label="Sales Person Name"
+            id="sourcePersonName"
+            name="sourcePersonName"
+            label="Source Person Name"
             variant="outlined"
             fullWidth
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            value={formik.values.salesPersonName}
-            error={formik.touched.salesPersonName && Boolean(formik.errors.salesPersonName)}
-            helperText={formik.touched.salesPersonName && formik.errors.salesPersonName}
+            value={formik.values.sourcePersonName}
+            error={formik.touched.sourcePersonName && Boolean(formik.errors.sourcePersonName)}
+            helperText={formik.touched.sourcePersonName && formik.errors.sourcePersonName}
           />
         </Grid>
         <Grid item lg={2} md={3} sm={6} xs={12}>
           <TextField
-            id="designation"
-            name="designation"
-            label="Designation"
+            id="companyName"
+            name="companyName"
+            label="Company Name"
             variant="outlined"
             fullWidth
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            value={formik.values.designation}
-            error={formik.touched.designation && Boolean(formik.errors.designation)}
-            helperText={formik.touched.designation && formik.errors.designation}
+            value={formik.values.companyName}
+            error={formik.touched.companyName && Boolean(formik.errors.companyName)}
+            helperText={formik.touched.companyName && formik.errors.companyName}
           />
         </Grid>
         <Grid item lg={2} md={3} sm={6} xs={12}>
@@ -103,4 +103,4 @@ const AddSalesPersonForm = ({ handleSubmitAddSalesPersonForm }) => {
   );
 };
 
-export default AddSalesPersonForm;
+export default AddSourcePersonForm;
