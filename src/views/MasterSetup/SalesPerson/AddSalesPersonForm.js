@@ -7,7 +7,7 @@ import Button from '@mui/material/Button';
 import { Grid, Typography } from '@mui/material';
 import { gridSpacing } from 'store/constant';
 
-const AddSalesPersonForm = ({ handleSubmitAddSalesPersonForm }) => {
+const AddSalesPersonForm = ({ handleSubmitAddSalesPersonForm, getTableData }) => {
   const formik = useFormik({
     initialValues: {
       salesPersonName: '',
@@ -21,8 +21,13 @@ const AddSalesPersonForm = ({ handleSubmitAddSalesPersonForm }) => {
       mobile: Yup.string().required('Mobile is required'),
       email: Yup.string().email('Invalid email address').required('Email is required')
     }),
-    onSubmit: (values) => {
-      handleSubmitAddSalesPersonForm(values);
+    onSubmit: async (values) => {
+      const response = await handleSubmitAddSalesPersonForm(values);
+      console.log('mmmm', response);
+      if (response.sid) {
+        getTableData();
+        formik.handleReset();
+      }
     }
   });
 

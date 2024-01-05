@@ -21,6 +21,8 @@ import Switch from '@mui/material/Switch';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
+import { useState } from 'react';
+import { useEffect } from 'react';
 
 function createData(id, salesPersonName, designation, mobile, email) {
   return {
@@ -204,13 +206,17 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired
 };
 
-export default function EnhancedTable() {
+export default function EnhancedTable({ tableDataForSalesPerson }) {
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('designation');
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rows, setRows] = useState(tableDataForSalesPerson);
+  useEffect(() => {
+    setRows(tableDataForSalesPerson);
+  }, [tableDataForSalesPerson]);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -261,10 +267,18 @@ export default function EnhancedTable() {
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
-  const visibleRows = React.useMemo(
-    () => stableSort(rows, getComparator(order, orderBy)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
-    [order, orderBy, page, rowsPerPage]
-  );
+  // const visibleRows = React.useMemo(
+  //   () => stableSort(rows, getComparator(order, orderBy)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
+  //   [order, orderBy, page, rowsPerPage]
+  // );
+  const [visibleRows, setVisibleRows] = useState([]);
+
+  useEffect(() => {
+    const temp = stableSort(rows, getComparator(order, orderBy)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+
+    setVisibleRows(temp);
+    // eslint-disable-next-line
+  }, [order, orderBy, page, rowsPerPage, rows]);
 
   return (
     <Box sx={{ width: '100%', mt: 5 }}>
