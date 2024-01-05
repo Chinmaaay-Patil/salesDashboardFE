@@ -6,7 +6,6 @@ export const getVersionList = async () => {
 
     const salesPersonsData = response.data;
 
-    console.log('getVersionList.js:', salesPersonsData);
     return salesPersonsData;
   } catch (error) {
     console.error('getVersionList.js:', error.message);

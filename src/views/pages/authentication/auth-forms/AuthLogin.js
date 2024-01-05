@@ -130,7 +130,6 @@ const FirebaseLogin = ({ ...others }) => {
           password: Yup.string().max(255).required('Password is required')
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-          console.log('values', values);
           if (values.email === 'admin@elabassist.com' && values.password === 'admin123') {
             sessionStorage.setItem('apikey', 'test@salesdashboard.com');
             navigate('/');

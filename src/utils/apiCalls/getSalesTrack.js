@@ -47,9 +47,6 @@ export const getSalesTrack = async (salesDashboardDataDates) => {
       console.error('Error fetching getSalesTrack:', error.message);
       throw error;
     }
-
-    // console.log('chin', SalesList);
-    // return SalesList;
   } catch (error) {
     console.error('Error fetching getSalesTrack:', error.message);
     throw error;

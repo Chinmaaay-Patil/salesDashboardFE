@@ -30,12 +30,13 @@ function CustomerList() {
   const [selectedColumns, setSelectedColumns] = useState(() => columns.map((column) => ({ ...column, visible: true }))); // Initialize with all columns visible
   const [salesTrackData, setSalesTrackData] = useState([]);
   const [selected, setSelected] = React.useState([]);
+
   const navigate = useNavigate();
   const [salesDashboardDataDates, setSalesDashboardDataDates] = useState({
     fromDate: getTodayDate(),
     toDate: getTodayDate()
   });
-  console.log('selected', selected);
+
   async function fetchCustomerList() {
     const temp = await getSalesTrack(salesDashboardDataDates);
 

@@ -6,7 +6,6 @@ export const getSourceLeads = async () => {
 
     const salesPersonsData = response.data;
 
-    console.log('getSourceLeads:', salesPersonsData);
     return salesPersonsData;
   } catch (error) {
     console.error('getSourceLeads:', error.message);

@@ -73,7 +73,6 @@ const MyForm = () => {
   };
   const handleFileUpload = (files) => {
     // Handle the uploaded files here
-    console.log('Uploaded files:', files);
   };
   function generateUniqueId() {
     const timestamp = Date.now().toString(36); // Convert current timestamp to base36 string

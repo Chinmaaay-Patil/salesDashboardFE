@@ -30,7 +30,6 @@ const AddSourcePersonForm = ({ handleSubmitAddSourcePersonForm, sourceOfLeadOpti
         getTableData();
         formik.handleReset();
       }
-      console.log('responseresponse', response);
     }
   });
 

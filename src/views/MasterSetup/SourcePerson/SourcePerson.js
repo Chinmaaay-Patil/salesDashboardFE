@@ -18,7 +18,6 @@ function SourcePerson() {
   async function fetchDropDOwnData() {
     const getSourceLeadsListData = await getSourceLeads();
     setSourceOfLeadOptions(getSourceLeadsListData);
-    console.log('getSourcePersonListData', getSourceLeadsListData);
   }
 
   useEffect(() => {
@@ -33,7 +32,6 @@ function SourcePerson() {
     const tableData = await getSourcePerson();
 
     setTableDataForSourcePerson(tableData);
-    console.log('tableData', tableData);
   }
 
   return (

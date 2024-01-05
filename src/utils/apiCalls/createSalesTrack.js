@@ -2,7 +2,6 @@ import axios from 'axios';
 import commonAPI from 'utils/axiosConfig';
 
 const createSalesTrack = async (salesTrackData) => {
-  console.log('salesTrackData', salesTrackData);
   const playload = {
     sourceId: salesTrackData.sourceOfLead.sid,
     versionId: salesTrackData.version.vid,

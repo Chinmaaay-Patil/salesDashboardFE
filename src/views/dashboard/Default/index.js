@@ -74,7 +74,7 @@ const Dashboard = () => {
   const handleReset = () => {
     setSelectedSalesPerson(null);
   };
-  console.log('chim', stackedBarChartData);
+
   return (
     <Grid container spacing={gridSpacing}>
       <Grid item xs={12}>

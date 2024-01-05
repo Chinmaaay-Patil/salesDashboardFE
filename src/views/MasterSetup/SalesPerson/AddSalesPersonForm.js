@@ -23,7 +23,7 @@ const AddSalesPersonForm = ({ handleSubmitAddSalesPersonForm, getTableData }) =>
     }),
     onSubmit: async (values) => {
       const response = await handleSubmitAddSalesPersonForm(values);
-      console.log('mmmm', response);
+
       if (response.sid) {
         getTableData();
         formik.handleReset();

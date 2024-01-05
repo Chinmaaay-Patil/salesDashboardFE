@@ -6,7 +6,6 @@ export const getSalesPersonList = async () => {
 
     const salesPersonsData = response.data;
 
-    console.log('Sales Persons Data:', salesPersonsData);
     return salesPersonsData;
   } catch (error) {
     console.error('Error fetching data:', error.message);

@@ -205,7 +205,6 @@ export default function EnhancedTable({ tableDataForSourcePerson }) {
   };
 
   const handleClick = (event, id) => {
-    console.log('id', id);
     const selectedIndex = selected.indexOf(id);
     let newSelected = [];
 
@@ -269,7 +268,6 @@ export default function EnhancedTable({ tableDataForSourcePerson }) {
             />
             <TableBody>
               {visibleRows.map((row, index) => {
-                console.log('row', row);
                 const isItemSelected = isSelected(row.spid);
                 const labelId = `enhanced-table-checkbox-${index}`;
 

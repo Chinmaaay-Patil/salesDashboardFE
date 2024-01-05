@@ -137,7 +137,7 @@ export default function EnhancedTable({ selectedColumns, salesTrackData, selecte
     }
     setSelected(newSelected);
   };
-
+  console.log('selected', selected);
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };

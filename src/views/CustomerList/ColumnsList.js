@@ -131,8 +131,6 @@ const CustomerList = ({
     setOpenBackDrop(true);
   };
 
-  console.log('selected.length ', salesTrackData);
-
   return (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '10px' }}>
       <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={openBackDrop} onClick={handleCloseBackDrop}>
