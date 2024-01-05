@@ -31,6 +31,7 @@ function SourcePerson() {
   }, []);
   async function getTableData() {
     const tableData = await getSourcePerson();
+
     setTableDataForSourcePerson(tableData);
     console.log('tableData', tableData);
   }
