@@ -55,7 +55,19 @@ function CustomerList() {
   }, []);
 
   const isMobile = useMediaQuery('(max-width: 600px)');
+  const [editData, setEditData] = useState({});
 
+  function handleEditOneRowData() {
+    if (selected.length === 1) {
+      const temp = salesTrackData.find((track) => {
+        return track.id === selected[0];
+      });
+
+      setEditData(temp);
+    } else {
+      setEditData({});
+    }
+  }
   return (
     <Box>
       <Box
@@ -78,10 +90,17 @@ function CustomerList() {
           selected={selected}
           setSelected={setSelected}
           salesTrackData={salesTrackData}
+          handleEditOneRowData={handleEditOneRowData}
         />
       </Box>
 
-      <DummyDataTable selectedColumns={selectedColumns} salesTrackData={salesTrackData} selected={selected} setSelected={setSelected} />
+      <DummyDataTable
+        selectedColumns={selectedColumns}
+        salesTrackData={salesTrackData}
+        selected={selected}
+        setSelected={setSelected}
+        editData={editData}
+      />
     </Box>
   );
 }

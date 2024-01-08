@@ -12,12 +12,12 @@ import TableSortLabel from '@mui/material/TableSortLabel';
 import Paper from '@mui/material/Paper';
 import Checkbox from '@mui/material/Checkbox';
 import { visuallyHidden } from '@mui/utils';
-import { Button, Typography } from '@mui/material';
+import { Button, TextField, Typography } from '@mui/material';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import renderCustomerTableDataListTableBody from 'utils/renderCustomerTableDataListTableBody';
 
-export default function EnhancedTable({ selectedColumns, salesTrackData, selected, setSelected }) {
+export default function EnhancedTable({ selectedColumns, salesTrackData, selected, setSelected, editData }) {
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('LabName');
 
@@ -190,6 +190,7 @@ export default function EnhancedTable({ selectedColumns, salesTrackData, selecte
 
   // ... (inside the component)
   const minHeightTable = '65vh';
+
   return (
     <Box sx={{ width: '100%', minHeight: minHeightTable }}>
       {visibleRows.length !== 0 ? (
@@ -229,12 +230,32 @@ export default function EnhancedTable({ selectedColumns, salesTrackData, selecte
                           }}
                         />
                       </TableCell>
-                      {selectedColumns.map((column) => {
+                      {/* {selectedColumns.map((column) => {
                         return (
                           column.visible && renderCustomerTableDataListTableBody(column, row)
                           // <TableCell key={column.id} align="left" padding="normal">
                           //   {row[column.id]}
                           // </TableCell>ss
+                        );
+                      })} */}
+
+                      {selectedColumns.map((column) => {
+                        console.log('colll', row);
+                        return (
+                          column.visible && (
+                            <TableCell key={column.id} align="left" padding="normal">
+                              {editData.id && editData.id === row.id ? (
+                                <TextField
+                                  id={column.id}
+                                  label={column.label}
+                                  // value={editData[column.id] || ''}
+                                  // onChange={(event) => handleEditDataChange(event, column.id)}
+                                />
+                              ) : (
+                                renderCustomerTableDataListTableBody(column, row)
+                              )}
+                            </TableCell>
+                          )
                         );
                       })}
                     </TableRow>

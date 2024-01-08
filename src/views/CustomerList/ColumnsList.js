@@ -11,6 +11,7 @@ import DateComponent from 'ui-component/DatePicker';
 import { gridSpacing } from 'store/constant';
 import { modifyAndDownloadDocument } from 'utils/apiCalls/modifyAndDownloadDocument';
 import { handleDownloadClick } from 'utils/apiCalls/downloadQuotationFile';
+import EditIcon from '@mui/icons-material/Edit';
 const grid = 8;
 
 const getItemStyle = (isDragging, draggableStyle) => ({
@@ -72,7 +73,8 @@ const CustomerList = ({
   handleFilterOptionsChange,
   selected,
   setSelected,
-  salesTrackData
+  salesTrackData,
+  handleEditOneRowData
 }) => {
   const [customers, setCustomers] = useState([]);
 
@@ -177,7 +179,23 @@ const CustomerList = ({
             disableElevation
             size="large"
             disabled={selected.length !== 1}
-            onClick={handleDownloadDocument}
+            onClick={handleEditOneRowData}
+          >
+            <EditIcon />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Download Quotation">
+          <IconButton
+            color="secondary"
+            id="demo-customized-button"
+            aria-controls={open ? 'demo-customized-menu' : undefined}
+            aria-haspopup="true"
+            aria-expanded={open ? 'true' : undefined}
+            variant="outlined"
+            disableElevation
+            size="large"
+            disabled={selected.length !== 1}
+            // onClick={handle}
           >
             <ArrowCircleDownIcon />
           </IconButton>
