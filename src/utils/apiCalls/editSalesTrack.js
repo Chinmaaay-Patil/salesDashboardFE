@@ -2,9 +2,8 @@ import axios from 'axios';
 import commonAPI from 'utils/axiosConfig';
 
 const editSalesTrack = async (salesTrackData) => {
-  console.log('first', salesTrackData);
   const payload = {
-    // salesTrackId: salesTrackData.id,
+    id: salesTrackData.id,
     sourceId: salesTrackData.sourceId.sid,
     versionId: salesTrackData.versionId.vid,
     salesPersonId: salesTrackData.salesPersonId.sid,
