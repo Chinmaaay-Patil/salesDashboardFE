@@ -1,4 +1,3 @@
-import axios from 'axios';
 import commonAPI from 'utils/axiosConfig';
 
 const editSalesTrack = async (salesTrackData) => {
@@ -20,11 +19,9 @@ const editSalesTrack = async (salesTrackData) => {
     followupdate: salesTrackData.followupdate,
     attachments: salesTrackData.attachments
   };
-  console.log('play', payload);
 
   try {
-    const response = await commonAPI.put(`/api/Dashboard/EditSalesTrack?id=${salesTrackData.id}`, payload); // Assuming you use a PUT request for editing
-
+    const response = await commonAPI.put(`/api/Dashboard/EditSalesTrack?id=${salesTrackData.id}`, payload);
     return response.data;
   } catch (error) {
     throw error;

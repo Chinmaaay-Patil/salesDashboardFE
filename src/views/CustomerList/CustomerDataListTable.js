@@ -73,6 +73,7 @@ export default function EnhancedTable({ selectedColumns, salesTrackData, selecte
               inputProps={{
                 'aria-label': 'select all labs'
               }}
+              disabled={editData?.id}
             />
           </TableCell>
           {selectedColumns.map(
@@ -213,13 +214,15 @@ export default function EnhancedTable({ selectedColumns, salesTrackData, selecte
 
                   return (
                     <TableRow
-                      hover
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
                       key={row.id}
                       selected={isItemSelected}
-                      sx={{ cursor: 'pointer' }}
+                      sx={{
+                        cursor: 'pointer',
+                        backgroundColor: new Date(row.followupdate).setHours(0, 0, 0, 0) < new Date().setHours(0, 0, 0, 0) ? '#ffcccc' : ''
+                      }}
                     >
                       <TableCell padding="checkbox">
                         <Checkbox
