@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 import { getSalesTrack } from 'utils/apiCalls/getSalesTrack';
 import { getTodayDate } from 'utils/getTodaysDate';
 import { useNavigate } from 'react-router';
+import editSalesTrack from 'utils/apiCalls/editSalesTrack';
 
 function CustomerList() {
   const columns = [
@@ -69,9 +70,19 @@ function CustomerList() {
     }
   }
 
-  function handleSaveOneRowData() {
+  async function handleSaveOneRowData() {
     console.log('editData save', editData);
-    setEditData({});
+
+    await editSalesTrack(editData)
+      .then(async () => {
+        const temp = await getSalesTrack(salesDashboardDataDates);
+
+        setSalesTrackData(temp);
+        setEditData({});
+      })
+      .catch((error) => {
+        console.log('error handleSaveOneRowData ', error);
+      });
   }
   return (
     <Box>
