@@ -68,6 +68,11 @@ function CustomerList() {
       setEditData({});
     }
   }
+
+  function handleSaveOneRowData() {
+    console.log('editData save', editData);
+    setEditData({});
+  }
   return (
     <Box>
       <Box
@@ -91,6 +96,8 @@ function CustomerList() {
           setSelected={setSelected}
           salesTrackData={salesTrackData}
           handleEditOneRowData={handleEditOneRowData}
+          editData={editData}
+          handleSaveOneRowData={handleSaveOneRowData}
         />
       </Box>
 
@@ -100,6 +107,7 @@ function CustomerList() {
         selected={selected}
         setSelected={setSelected}
         editData={editData}
+        setEditData={setEditData}
       />
     </Box>
   );

@@ -16,8 +16,9 @@ import { Button, TextField, Typography } from '@mui/material';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import renderCustomerTableDataListTableBody from 'utils/renderCustomerTableDataListTableBody';
+import RenderEditCustomerListComponent from 'utils/renderEditCustomerListComponent';
 
-export default function EnhancedTable({ selectedColumns, salesTrackData, selected, setSelected, editData }) {
+export default function EnhancedTable({ selectedColumns, salesTrackData, selected, setSelected, editData, setEditData }) {
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('LabName');
 
@@ -180,16 +181,16 @@ export default function EnhancedTable({ selectedColumns, salesTrackData, selecte
     const temp = stableSort(rows, getComparator(order, orderBy)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
     setVisibleRows(temp);
-    // eslint-disable-next-line
   }, [order, orderBy, page, rowsPerPage, rows]);
-  // const visibleRows = React.useMemo(
-  //   () => stableSort(rows, getComparator(order, orderBy)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
-  //   [order, orderBy, page, rowsPerPage]
-  // );
-  // Inside EnhancedTable component
 
-  // ... (inside the component)
   const minHeightTable = '65vh';
+
+  const handleEditDataChange = (event, columnId) => {
+    setEditData((prevEditData) => ({
+      ...prevEditData,
+      [columnId]: event.target.value
+    }));
+  };
 
   return (
     <Box sx={{ width: '100%', minHeight: minHeightTable }}>
@@ -213,7 +214,6 @@ export default function EnhancedTable({ selectedColumns, salesTrackData, selecte
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, row.id)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
@@ -228,28 +228,21 @@ export default function EnhancedTable({ selectedColumns, salesTrackData, selecte
                           inputProps={{
                             'aria-labelledby': labelId
                           }}
+                          disabled={editData?.id}
+                          onClick={(event) => handleClick(event, row.id)}
                         />
                       </TableCell>
-                      {/* {selectedColumns.map((column) => {
-                        return (
-                          column.visible && renderCustomerTableDataListTableBody(column, row)
-                          // <TableCell key={column.id} align="left" padding="normal">
-                          //   {row[column.id]}
-                          // </TableCell>ss
-                        );
-                      })} */}
 
                       {selectedColumns.map((column) => {
-                        console.log('colll', row);
                         return (
                           column.visible && (
                             <TableCell key={column.id} align="left" padding="normal">
                               {editData.id && editData.id === row.id ? (
-                                <TextField
-                                  id={column.id}
-                                  label={column.label}
-                                  // value={editData[column.id] || ''}
-                                  // onChange={(event) => handleEditDataChange(event, column.id)}
+                                <RenderEditCustomerListComponent
+                                  column={column}
+                                  editData={editData}
+                                  handleEditDataChange={handleEditDataChange}
+                                  setEditData={setEditData}
                                 />
                               ) : (
                                 renderCustomerTableDataListTableBody(column, row)

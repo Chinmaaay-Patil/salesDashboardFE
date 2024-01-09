@@ -12,6 +12,7 @@ import { gridSpacing } from 'store/constant';
 import { modifyAndDownloadDocument } from 'utils/apiCalls/modifyAndDownloadDocument';
 import { handleDownloadClick } from 'utils/apiCalls/downloadQuotationFile';
 import EditIcon from '@mui/icons-material/Edit';
+import SaveIcon from '@mui/icons-material/Save';
 const grid = 8;
 
 const getItemStyle = (isDragging, draggableStyle) => ({
@@ -74,7 +75,9 @@ const CustomerList = ({
   selected,
   setSelected,
   salesTrackData,
-  handleEditOneRowData
+  handleEditOneRowData,
+  editData,
+  handleSaveOneRowData
 }) => {
   const [customers, setCustomers] = useState([]);
 
@@ -167,23 +170,41 @@ const CustomerList = ({
         </Grid>
       </Grid>
       <Box sx={{ display: 'flex', gap: 2, ml: 30 }}>
-        {' '}
-        <Tooltip title="Download Quotation">
-          <IconButton
-            color="secondary"
-            id="demo-customized-button"
-            aria-controls={open ? 'demo-customized-menu' : undefined}
-            aria-haspopup="true"
-            aria-expanded={open ? 'true' : undefined}
-            variant="outlined"
-            disableElevation
-            size="large"
-            disabled={selected.length !== 1}
-            onClick={handleEditOneRowData}
-          >
-            <EditIcon />
-          </IconButton>
-        </Tooltip>
+        {editData?.id ? (
+          <Tooltip title="Save">
+            <IconButton
+              color="secondary"
+              id="demo-customized-button"
+              aria-controls={open ? 'demo-customized-menu' : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? 'true' : undefined}
+              variant="outlined"
+              disableElevation
+              size="large"
+              onClick={handleSaveOneRowData}
+            >
+              <SaveIcon />
+            </IconButton>{' '}
+          </Tooltip>
+        ) : (
+          <Tooltip title="Edit Selected row">
+            <IconButton
+              color="secondary"
+              id="demo-customized-button"
+              aria-controls={open ? 'demo-customized-menu' : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? 'true' : undefined}
+              variant="outlined"
+              disableElevation
+              size="large"
+              disabled={selected.length !== 1}
+              onClick={handleEditOneRowData}
+            >
+              <EditIcon />
+            </IconButton>
+          </Tooltip>
+        )}
+
         <Tooltip title="Download Quotation">
           <IconButton
             color="secondary"
